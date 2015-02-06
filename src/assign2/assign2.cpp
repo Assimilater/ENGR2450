@@ -50,6 +50,11 @@ Estimate assign2::Bisect(
     return est;
 }
 
+//---------------------------------------------------------------------------------+
+// Estimate ModFalsePos                                                            |
+// Given an arbitrary polynomial, use the modified false position method           |
+// The equation "f(root) = 0", assuming l_bound < root < r_bound                   |
+//---------------------------------------------------------------------------------+
 Estimate assign2::ModFalsePos(
                 std::function<double(double)> f,
                 double l_bound,
@@ -191,40 +196,47 @@ void assign2::Problem2() {
     };
 
     const int
-        TITLE = 50,
+        TITLE = 70,
         COL_ROOT = 10,
-        COL_PSUB = 10,
+        COL_PVALUE = 15,
         COL_LOOPS = 10,
         COL_ERROR = 15;
 
     Estimate est;
 
-    std::cout << "Problem 1:" << std::endl
+    std::cout << "Problem 2:" << std::endl
         << std::setw(TITLE) << centered("Find when Ps = 1.2 Pu")
         << std::endl << std::left
         << std::setw(COL_ROOT) << "t"
-        << std::setw(COL_PSUB) << "Ps(t)"
+        << std::setw(COL_ROOT) << "Ps(t)"
+        << std::setw(COL_ROOT) << "Pu(t)"
+        << std::setw(COL_PVALUE) << "difference"
         << std::setw(COL_LOOPS) << "loops"
         << std::setw(COL_ERROR) << "error"
         << std::endl;
 
-    est = Bisect(seek, -1000, 900, 100, 0.05);
+    est = ModFalsePos(seek, 0, 100, 100, 0.05);
     std::cout
         << std::setw(COL_ROOT) << est.value
-        << std::setw(COL_PSUB) << seek(est.value)
+        << std::setw(COL_ROOT) << Ps(est.value)
+        << std::setw(COL_ROOT) << Pu(est.value)
+        << std::setw(COL_PVALUE) << seek(est.value)
         << std::setw(COL_LOOPS) << est.loops
         << std::setw(COL_ERROR) << est.error
         << std::endl;
 
-    std::cout << "--------------------------------------------------" << std::endl << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl << std::endl;
 }
 
+//---------------------------------------------------------------------------------+
+// Problem 3 - Using the Modified False Position Method                            |
+//---------------------------------------------------------------------------------+
 void assign2::Problem3() {
     
 }
 
 void assign2::main() {
-    Problem1();
+    //Problem1();
     Problem2();
     Problem3();
 }
