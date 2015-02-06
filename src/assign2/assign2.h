@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <vector>
 
 namespace assign2 {
     struct Estimate {
@@ -15,10 +16,12 @@ namespace assign2 {
 
     Estimate Bisect(std::function<double(double)>, double, double, double, double);
     Estimate ModFalsePos(std::function<double(double)>, double, double, double, double);
+    Estimate FixedPoint(std::function<double(double)>, double, double, double);
 
     void Problem1();
     void Problem2();
     void Problem3();
+    void Problem4();
 
     void main();
 }

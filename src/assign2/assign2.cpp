@@ -2,6 +2,10 @@
 #include <iostream>
 #include <iomanip>
 
+// Include PI constant
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include "..\shared\helpers.h"
 #include "..\shared\centered.h"
 using namespace assign2;
@@ -110,6 +114,32 @@ Estimate assign2::ModFalsePos(
 }
 
 //---------------------------------------------------------------------------------+
+// Estimate FixedPoint                                                             |
+// The function accepted should return x_next given the current estimate of x      |
+// Iterate using the fixed point method to approximate an unknown function's root  |
+//---------------------------------------------------------------------------------+
+Estimate assign2::FixedPoint(
+                std::function<double(double)> f,
+                double guess,
+                double max_loops,
+                double max_error) {
+    Estimate est(guess);
+    double prev;
+
+    do {
+        ++est.loops;
+        prev = est.value;
+
+        est.value = f(est.value);
+        if (est.value != 0) {
+            est.error = abs(est.value - prev) * 100 / est.value;
+        }
+    } while (est.loops < max_loops && est.error >= max_error);
+
+    return est;
+}
+
+//---------------------------------------------------------------------------------+
 // Problem 1 - Using the Bisection Method                                          |
 //---------------------------------------------------------------------------------+
 void assign2::Problem1() {
@@ -204,8 +234,7 @@ void assign2::Problem2() {
 
     Estimate est;
 
-    std::cout << "Problem 2:" << std::endl
-        << std::setw(TITLE) << centered("Find when Ps = 1.2 Pu")
+    std::cout << "Problem 2: Find when Ps = 1.2 Pu"
         << std::endl << std::left
         << std::setw(COL_ROOT) << "t"
         << std::setw(COL_ROOT) << "Ps(t)"
@@ -229,14 +258,66 @@ void assign2::Problem2() {
 }
 
 //---------------------------------------------------------------------------------+
-// Problem 3 - Using the Modified False Position Method                            |
+// Problem 3 - Using the NewtonRaphson Method                                      |
 //---------------------------------------------------------------------------------+
 void assign2::Problem3() {
-    
+    const double guess = 4;
+    auto f = [](double h) -> double {
+        return M_PI * pow(h, 2) * (9 - h) / 3 - 30;
+    };
+    auto fp = [](double h) -> double {
+        return M_PI * (6 * h - pow(h, 2));
+    };
+
+    // The Newton-Raphson method
+    auto next = [&f, &fp](double x) -> double {
+        return x - (f(x) / fp(x));
+    };
+
+    Estimate root = FixedPoint(next, guess, 100, 0.05);
+    std::cout
+        << "Problem 3:" << std::endl
+        << "Root: " << root.value << std::endl
+        << "Error: " << root.error << std::endl
+        << "Loops: " << root.loops << std::endl
+        << std::endl
+        << "--------------------------------------------------" << std::endl << std::endl;
+}
+
+//---------------------------------------------------------------------------------+
+// Problem 4 - Using the Modified Secant Method                                    |
+//---------------------------------------------------------------------------------+
+void assign2::Problem4() {
+    const double
+        guess = 4,
+        delta = 0.001,
+        V = pow(10, 6),
+        Q = pow(10, 5),
+        W = V,
+        k = 0.25;
+
+    auto f = [&V, &Q, &W, &k](double c) -> double {
+        return (W / V) - (Q * c / V) - (k * sqrt(c));
+    };
+
+    // The modified secant method
+    auto next = [&f, &delta](double x) -> double {
+        return x - (delta * x * f(x) / (f(x + delta * x) - f(x)));
+    };
+
+    Estimate root = FixedPoint(next, guess, 100, 0.05);
+    std::cout
+        << "Problem 4:" << std::endl
+        << "Root: " << root.value << std::endl
+        << "Error: " << root.error << std::endl
+        << "Loops: " << root.loops << std::endl
+        << std::endl
+        << "--------------------------------------------------" << std::endl << std::endl;
 }
 
 void assign2::main() {
-    //Problem1();
+    Problem1();
     Problem2();
     Problem3();
+    Problem4();
 }
