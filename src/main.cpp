@@ -19,8 +19,8 @@ int main() {
         {3, 4},
     };
 
-    Matrix<double> c = a * b;
-    std::cout << c << std::endl;
+    a += b;
+    std::cout << a << std::endl;
 
     system("pause");
     return 0;

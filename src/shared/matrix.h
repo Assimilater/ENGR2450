@@ -36,6 +36,9 @@ public:
     template <typename f_T1, typename f_T2>
     friend Matrix<f_T1> operator*(const Matrix<f_T1>&, const Matrix<f_T2>&);
 
+    template <typename f_T1, typename f_T2>
+    friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
+
     // Common operations
     Matrix<T> Transpose() { return Transpose(*this); }
     T Trace() { return Trace(*this); }
@@ -193,7 +196,7 @@ f_T Trace(const Matrix<f_T> &a, bool& error) {
     return sum;
 }
 
-// syntactical sugar (no error catching)
+// syntactical sugar (input validation expected prior to these calls)
 
 // scalar multiplication
 template <typename T, typename N,
@@ -261,6 +264,14 @@ std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
 }
 
 // matrix multiplication
+template <typename T1, typename T2>
+Matrix<T1>& operator*=(Matrix<T1> &a, const Matrix<T2> &b) {
+    // Matrix multiplication is more complicated than matrix addition
+    // Because a would need to be resized, it is more efficient
+    // To use operator* here than to use this in operator*
+    return a = a * b;
+}
+
 template <typename f_T1, typename f_T2>
 Matrix<f_T1> operator*(const Matrix<f_T1> &a, const Matrix<f_T2> &b) {
     Matrix<f_T1> c(a.Rows, b.Cols, a._default);
@@ -271,5 +282,43 @@ Matrix<f_T1> operator*(const Matrix<f_T1> &a, const Matrix<f_T2> &b) {
             }
         }
     }
+    return c;
+}
+
+// matrix addition
+template <typename f_T1, typename f_T2>
+Matrix<f_T1>& operator+=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) {
+            a._array[i][j] += b._array[i][j];
+        }
+    }
+
+    return a;
+}
+
+template <typename T1, typename T2>
+Matrix<T1> operator+(const Matrix<T1> &a, const Matrix<T2> &b) {
+    Matrix<T1> c(a);
+    c += b;
+    return c;
+}
+
+// matrix subtraction
+template <typename f_T1, typename f_T2>
+Matrix<f_T1>& operator-=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) {
+            a._array[i][j] -= b._array[i][j];
+        }
+    }
+
+    return a;
+}
+
+template <typename T1, typename T2>
+Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
+    Matrix<T1> c(a);
+    c -= b;
     return c;
 }
