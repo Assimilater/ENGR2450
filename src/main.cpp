@@ -10,16 +10,13 @@
 
 int main() {
     //assign3::main();
-    ///*
-
-    //std::vector<double> b{5, 10};
-
-    Matrix<double> a;
-    std::cin >> a;
-
-    //Matrix<double> c = a * b;
-
-    std::cout << a << std::endl;
+    Matrix<double> a{
+        {1, 0},
+        {1, 1},
+    };
+    std::vector<double> x{2, 1};
+    std::vector<double> b = a * x;
+    std::cout << b << std::endl;
 
     system("pause");
     return 0;

@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <string>
 #include <complex>
 #include <iostream>
 #include <type_traits>
@@ -26,13 +25,13 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
 
     template <typename f_T>
-    friend std::vector<f_T> operator*(const std::vector<f_T>&, const Matrix<f_T>&);
-
-    template <typename f_T>
     friend Matrix<f_T> Transpose(const Matrix<f_T>&);
 
     template <typename f_T>
     friend f_T Trace(const Matrix<f_T>&, bool&);
+
+    template <typename f_T>
+    friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
 
     // Common operations
     Matrix<T> Transpose() { return Transpose(*this); }
@@ -247,13 +246,13 @@ template <typename T, typename N, typename C,
 
 // vector multiplication
 template <typename f_T>
-std::vector<f_T> operator*(const std::vector<f_T> &x, const Matrix<f_T> &a) {
-    std::vector<f_T> b;
+std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
+    std::vector<f_T> b(a.Rows);
     for (int i = 0; i < a.Rows; ++i) {
         b[i] = a._default;
         for (int j = 0; j < a.Cols; ++j) {
-            b[j] += a._array[i][j] * x[j];
+            b[i] += a._array[i][j] * x[j];
         }
     }
-    return a;
+    return b;
 }
