@@ -50,5 +50,8 @@
     <ClInclude Include="..\src\shared\matrix.h">
       <Filter>_Shared</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\shared\split.h">
+      <Filter>_Shared</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
