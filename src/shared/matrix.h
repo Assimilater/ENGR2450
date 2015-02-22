@@ -9,16 +9,18 @@ template <typename T>
 class Matrix {
 private:
     T** _array;
-    T _default;
+    static T _default;
 
 public:
     // Important properties
     int Rows, Cols;
 
-    bool isSingular() { return _array == nullptr; }
+    bool isSingular() { return _array == nullptr; };
+
+    static void setDefault(T val) { _default = val; };
 
     // public access to _array
-    T* operator [](int r) { return _array[r]; }
+    T* operator [](int r) { return _array[r]; };
 
     // friend templates
     template <typename f_T>
@@ -40,15 +42,15 @@ public:
     friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
 
     // Common operations
-    Matrix<T> Transpose() { return Transpose(*this); }
-    T Trace() { return Trace(*this); }
+    Matrix<T> Transpose() { return Transpose(*this); };
+    T Trace() { return Trace(*this); };
 
     // Constructors and destructor
     Matrix() {
         Rows = 0;
         Cols = 0;
         _array = nullptr;
-    }
+    };
 
     Matrix(int m, int n) {
         Rows = m;
@@ -99,7 +101,7 @@ public:
         clean();
         copy(a);
         return *this;
-    }
+    };
 
 private:
     void clean() {
@@ -120,8 +122,11 @@ private:
                 this->_array[i][j] = a._array[i][j];
             }
         }
-    }
+    };
 };
+
+template<typename T>
+T Matrix<T>::_default = 0;
 
 // iostream handlers
 template <typename T>

@@ -9,18 +9,7 @@
 #include <iostream>
 
 int main() {
-    //assign3::main();
-    Matrix<double> a{
-        {1, 0},
-        {1, 1},
-    };
-    Matrix<double> b{
-        {1, 2},
-        {3, 4},
-    };
-
-    a += b;
-    std::cout << a << std::endl;
+    assign3::main();
 
     system("pause");
     return 0;

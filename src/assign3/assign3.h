@@ -9,7 +9,10 @@ namespace assign3 {
         SINGULAR = 2
     };
 
-    std::vector<double> TryGauss(Matrix<double>&, std::vector<double>, double, GaussError&);
+    void Substitute(Matrix<double>&, std::vector<double>&, std::vector<double>&);
+    void Pivot(Matrix<double>&, std::vector<double>&, std::vector<double>&, int);
+    void Eliminate(Matrix<double>&, std::vector<double>&, std::vector<double>&, double, GaussError&);
+    std::vector<double> TryGauss(Matrix<double>, std::vector<double>&, double, GaussError&);
 
     void Problem1();
     void main();
