@@ -69,6 +69,7 @@
     <ClCompile Include="..\src\assign2\assign2.cpp" />
     <ClCompile Include="..\src\assign3\assign3.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\shared\split.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\assign1\assign1.h" />
