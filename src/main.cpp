@@ -12,7 +12,7 @@ int main() {
     assign3::main();
 
     Matrix<double> a{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}};
-    std::cout << a.value[1][1] << std::endl;
+    std::cout << a[1][1] << std::endl;
 
     system("pause");
     return 0;

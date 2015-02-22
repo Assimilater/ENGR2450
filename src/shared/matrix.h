@@ -4,10 +4,16 @@
 
 template <typename T>
 class Matrix {
-public:
-    T** value;
-    int rows, cols;
+private:
+    T** _array;
 
+public:
+    int Rows, Cols;
+
+    // public access to _array
+    T* operator [](int r) { return _array[r]; }
+
+    // Constructor to allow for C++11 initializer_list
     Matrix(std::initializer_list<std::initializer_list<T>> s) {
         // Take advantage of vector handling initalizer_list
         std::vector<std::initializer_list<T>> init = s;
@@ -16,34 +22,34 @@ public:
             data.push_back(std::vector<T>(*i));
         }
 
-        rows = data.size();
-        cols = data[0].size();
-        value = new T*[rows];
-        for (int i = 0; i < rows; ++i) {
-            value[i] = new T[cols];
-            for (int j = 0; j < cols; ++j) {
-                value[i][j] = data[i][j];
+        Rows = data.size();
+        Cols = data[0].size();
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = data[i][j];
             }
         }
     };
 
     Matrix(int m, int n, T val) {
-        rows = m;
-        cols = n;
-        value = new T*[rows];
-        for (int i = 0; i < rows; ++i) {
-            value[i] = new T[cols];
-            for (int j = 0; j < cols; ++j) {
-                value[i][j] = val;
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = val;
             }
         }
     };
 
     ~Matrix() {
-        for (int i = 0; i < cols; ++i) {
-            delete value[i];
+        for (int i = 0; i < Cols; ++i) {
+            delete _array[i];
         }
-        delete value;
-        value = nullptr;
+        delete _array;
+        _array = nullptr;
     };
 };
