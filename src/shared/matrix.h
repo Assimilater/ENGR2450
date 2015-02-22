@@ -1,19 +1,73 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <complex>
+#include <iostream>
+#include <type_traits>
 #include <initializer_list>
 
 template <typename T>
 class Matrix {
 private:
     T** _array;
+    T _default;
 
 public:
+    // Important properties
     int Rows, Cols;
+
+    bool isSingular() { return _array == nullptr; }
 
     // public access to _array
     T* operator [](int r) { return _array[r]; }
 
-    // Constructor to allow for C++11 initializer_list
+    // friend templates
+    template <typename f_T>
+    friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
+
+    template <typename f_T>
+    friend std::vector<f_T> operator*(const std::vector<f_T>&, const Matrix<f_T>&);
+
+    template <typename f_T>
+    friend Matrix<f_T> Transpose(const Matrix<f_T>&);
+
+    template <typename f_T>
+    friend f_T Trace(const Matrix<f_T>&, bool&);
+
+    // Common operations
+    Matrix<T> Transpose() { return Transpose(*this); }
+    T Trace() { return Trace(*this); }
+
+    // Constructors and destructor
+    Matrix() {
+        Rows = 0;
+        Cols = 0;
+        _array = nullptr;
+    }
+
+    Matrix(int m, int n) {
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+        }
+    };
+
+    // Allow initialized values
+    Matrix(int m, int n, T val) {
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = val;
+            }
+        }
+    };
+
+    // Allow for C++11 initializer_list
     Matrix(std::initializer_list<std::initializer_list<T>> s) {
         // Take advantage of vector handling initalizer_list
         std::vector<std::initializer_list<T>> init = s;
@@ -33,23 +87,173 @@ public:
         }
     };
 
-    Matrix(int m, int n, T val) {
-        Rows = m;
-        Cols = n;
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-            for (int j = 0; j < Cols; ++j) {
-                _array[i][j] = val;
-            }
-        }
-    };
+    Matrix(const Matrix<T> &a) { copy(a); }
+    ~Matrix() { clean(); };
 
-    ~Matrix() {
+    Matrix<T>& operator=(const Matrix<T> &a) {
+        clean();
+        copy(a);
+        return *this;
+    }
+
+private:
+    void clean() {
         for (int i = 0; i < Cols; ++i) {
             delete _array[i];
         }
         delete _array;
         _array = nullptr;
     };
+
+    void copy(const Matrix<T> &a) {
+        this->Rows = a.Rows;
+        this->Cols = a.Cols;
+        this->_array = new T*[this->Rows];
+        for (int i = 0; i < this->Rows; ++i) {
+            this->_array[i] = new T[this->Cols];
+            for (int j = 0; j < this->Cols; ++j) {
+                this->_array[i][j] = a._array[i][j];
+            }
+        }
+    }
 };
+
+// iostream handlers
+template <typename T>
+std::ostream& operator<<(std::ostream &out, const std::vector<T> &obj) {
+    out << "[";
+    for (auto i = obj.begin(); i < obj.end(); ++i) {
+        out << *i;
+        if (i < obj.end() - 1) {
+            out << ", ";
+        }
+    }
+    out << "]";
+    return out;
+}
+
+template <typename f_T>
+std::ostream& operator<<(std::ostream &out, const Matrix<f_T> &obj) {
+    out << std::endl;
+    for (int i = 0; i < obj.Rows; ++i) {
+        out << "[";
+        for (int j = 0; j < obj.Cols; ++j) {
+            out << obj._array[i][j];
+            if (j < obj.Cols - 1) {
+                out << ", ";
+            }
+        }
+        out << "]" << std::endl;
+    }
+    out << std::endl;
+    return out;
+}
+
+template <typename f_T>
+std::istream& operator>>(std::istream &in, Matrix<f_T> &obj) {
+    int m, n;
+    in >> m;
+    in >> n;
+    obj = Matrix<f_T>(m, n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            in >> obj[i][j];
+        }
+    }
+    return in;
+}
+
+// common operations
+template <typename f_T>
+Matrix<f_T> Transpose(const Matrix<f_T> &a) {
+    Matrix<f_T> trans(a.Cols, a.Rows);
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) {
+            trans[i][j] = a._array[j][i];
+        }
+    }
+    return trans;
+}
+
+template <typename f_T>
+f_T Trace(const Matrix<f_T> &a, bool& error) {
+    f_T sum = a._default;
+
+    if (a.Rows != a.Cols) {
+        error = true;
+    } else {
+        error = false;
+        for (int i = 0; i < a.Rows; ++i) {
+            sum += a._array[i][i];
+        }
+    }
+
+    return sum;
+}
+
+// syntactical sugar (no error catching)
+
+// scalar multiplication
+template <typename T, typename N,
+    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
+Matrix<T> operator*(const N &c, const Matrix<T> &a) {
+    Matrix<T> b(a);
+    for (int i = 0; i < b.Rows; ++i) {
+        for (int j = 0; j < b.Cols; ++j) {
+            b[i][j] *= c;
+        }
+    }
+    return b;
+}
+
+template <typename T, typename N,
+    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
+    Matrix<T> operator*(const Matrix<T> &a, const N &c) {
+    Matrix<T> b(a);
+    for (int i = 0; i < b.Rows; ++i) {
+        for (int j = 0; j < b.Cols; ++j) {
+            b[i][j] *= c;
+        }
+    }
+    return b;
+}
+
+// complex scalar multiplication
+template <typename T, typename N, typename C,
+    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
+    Matrix<T> operator*(const C &c, const Matrix<T> &a) {
+    Matrix<T> b(a);
+    for (int i = 0; i < b.Rows; ++i) {
+        for (int j = 0; j < b.Cols; ++j) {
+            b[i][j] *= c;
+        }
+    }
+    return b;
+}
+
+template <typename T, typename N, typename C,
+    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
+    Matrix<T> operator*(const Matrix<T> &a, const C &c) {
+    Matrix<T> b(a);
+    for (int i = 0; i < b.Rows; ++i) {
+        for (int j = 0; j < b.Cols; ++j) {
+            b[i][j] *= c;
+        }
+    }
+    return b;
+}
+
+// vector multiplication
+template <typename f_T>
+std::vector<f_T> operator*(const std::vector<f_T> &x, const Matrix<f_T> &a) {
+    std::vector<f_T> b;
+    for (int i = 0; i < a.Rows; ++i) {
+        b[i] = a._default;
+        for (int j = 0; j < a.Cols; ++j) {
+            b[j] += a._array[i][j] * x[j];
+        }
+    }
+    return a;
+}

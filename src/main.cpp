@@ -5,17 +5,21 @@
 #include "assign1\assign1.h"
 #include "assign2\assign2.h"
 #include "assign3\assign3.h"
-#include "shared\split.h"
+#include "shared\matrix.h"
 #include <iostream>
 
 int main() {
-    assign3::main();
+    //assign3::main();
+    ///*
 
-    std::string s = "This is a test";
-    std::vector<std::string> split = Split(s, ' ');
-    for (auto i = split.begin(); i < split.end(); ++i) {
-        std::cout << *i << std::endl;
-    }
+    //std::vector<double> b{5, 10};
+
+    Matrix<double> a;
+    std::cin >> a;
+
+    //Matrix<double> c = a * b;
+
+    std::cout << a << std::endl;
 
     system("pause");
     return 0;
