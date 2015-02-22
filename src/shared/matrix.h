@@ -33,6 +33,9 @@ public:
     template <typename f_T>
     friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
 
+    template <typename f_T1, typename f_T2>
+    friend Matrix<f_T1> operator*(const Matrix<f_T1>&, const Matrix<f_T2>&);
+
     // Common operations
     Matrix<T> Transpose() { return Transpose(*this); }
     T Trace() { return Trace(*this); }
@@ -255,4 +258,18 @@ std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
         }
     }
     return b;
+}
+
+// matrix multiplication
+template <typename f_T1, typename f_T2>
+Matrix<f_T1> operator*(const Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    Matrix<f_T1> c(a.Rows, b.Cols, a._default);
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) { // a.Cols = b.Rows (or error)
+            for (int k = 0; k < b.Cols; ++k) {
+                c[i][k] += a._array[i][j] * b._array[j][k];
+            }
+        }
+    }
+    return c;
 }

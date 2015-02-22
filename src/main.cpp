@@ -14,9 +14,13 @@ int main() {
         {1, 0},
         {1, 1},
     };
-    std::vector<double> x{2, 1};
-    std::vector<double> b = a * x;
-    std::cout << b << std::endl;
+    Matrix<double> b{
+        {1, 2},
+        {3, 4},
+    };
+
+    Matrix<double> c = a * b;
+    std::cout << c << std::endl;
 
     system("pause");
     return 0;
