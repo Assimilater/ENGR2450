@@ -62,8 +62,8 @@ std::vector<std::string> Split(std::string haystack, const char* delimiter) {
 //---------------------------------------------------------------------------------+
 std::vector<std::string> Split(std::string haystack, std::string delimiter) {
     std::vector<std::string> result;
-    std::string part;
     int inc = delimiter.length();
+    std::string part;
 
     int pos = haystack.find(delimiter);
     while (pos != std::string::npos) {
