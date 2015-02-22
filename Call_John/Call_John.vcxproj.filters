@@ -12,6 +12,9 @@
     <Filter Include="Assign1">
       <UniqueIdentifier>{9189c86a-f18e-46e0-8640-2d7f32832110}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assign3">
+      <UniqueIdentifier>{14d13ad2-293d-429c-9f0f-e3732edf2ceb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -20,6 +23,9 @@
     </ClCompile>
     <ClCompile Include="..\src\assign2\assign2.cpp">
       <Filter>Assign2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign3\assign3.cpp">
+      <Filter>Assign3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="..\src\assign2\assign2.h">
       <Filter>Assign2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\assign3.h">
+      <Filter>Assign3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\matrix.h">
+      <Filter>_Shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
