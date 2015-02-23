@@ -22,42 +22,20 @@ public:
     // public access to _array
     T* operator [](int r) { return _array[r]; };
 
-    // friend templates
-    template <typename f_T>
-    friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
-
-    template <typename f_T>
-    friend Matrix<f_T> Transpose(const Matrix<f_T>&);
-
-    template <typename f_T>
-    friend f_T Trace(const Matrix<f_T>&, bool&);
-
-    template <typename f_T>
-    friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
-
-    template <typename f_T1, typename f_T2>
-    friend Matrix<f_T1> operator*(const Matrix<f_T1>&, const Matrix<f_T2>&);
-
-    template <typename f_T1, typename f_T2>
-    friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
-
     // Common operations
     Matrix<T> Transpose() { return Transpose(*this); };
     T Trace() { return Trace(*this); };
 
     // Constructors and destructor
-    Matrix() {
-        Rows = 0;
-        Cols = 0;
-        _array = nullptr;
-    };
-
     Matrix(int m, int n) {
         Rows = m;
         Cols = n;
         _array = new T*[Rows];
         for (int i = 0; i < Rows; ++i) {
             _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = _default;
+            }
         }
     };
 
@@ -94,14 +72,21 @@ public:
         }
     };
 
-    Matrix(const Matrix<T> &a) { copy(a); }
-    ~Matrix() { clean(); };
-
+    // Override default operator=, constructors, and destructor
     Matrix<T>& operator=(const Matrix<T> &a) {
         clean();
         copy(a);
         return *this;
     };
+
+    Matrix() {
+        Rows = 0;
+        Cols = 0;
+        _array = nullptr;
+    };
+
+    Matrix(const Matrix<T> &a) { copy(a); }
+    ~Matrix() { clean(); };
 
 private:
     void clean() {
@@ -123,55 +108,30 @@ private:
             }
         }
     };
+
+public:
+    // friend templates
+    template <typename f_T>
+    friend Matrix<f_T> Transpose(const Matrix<f_T>&);
+
+    template <typename f_T>
+    friend f_T Trace(const Matrix<f_T>&, bool&);
+
+    template <typename f_T>
+    friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
+
+    template <typename f_T>
+    friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
+
+    template <typename f_T1, typename f_T2>
+    friend Matrix<f_T1> operator*(const Matrix<f_T1>&, const Matrix<f_T2>&);
+
+    template <typename f_T1, typename f_T2>
+    friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
 };
 
 template<typename T>
 T Matrix<T>::_default = 0;
-
-// iostream handlers
-template <typename T>
-std::ostream& operator<<(std::ostream &out, const std::vector<T> &obj) {
-    out << "[";
-    for (auto i = obj.begin(); i < obj.end(); ++i) {
-        out << *i;
-        if (i < obj.end() - 1) {
-            out << ", ";
-        }
-    }
-    out << "]";
-    return out;
-}
-
-template <typename f_T>
-std::ostream& operator<<(std::ostream &out, const Matrix<f_T> &obj) {
-    out << std::endl;
-    for (int i = 0; i < obj.Rows; ++i) {
-        out << "[";
-        for (int j = 0; j < obj.Cols; ++j) {
-            out << obj._array[i][j];
-            if (j < obj.Cols - 1) {
-                out << ", ";
-            }
-        }
-        out << "]" << std::endl;
-    }
-    out << std::endl;
-    return out;
-}
-
-template <typename f_T>
-std::istream& operator>>(std::istream &in, Matrix<f_T> &obj) {
-    int m, n;
-    in >> m;
-    in >> n;
-    obj = Matrix<f_T>(m, n);
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            in >> obj[i][j];
-        }
-    }
-    return in;
-}
 
 // common operations
 template <typename f_T>
@@ -201,7 +161,50 @@ f_T Trace(const Matrix<f_T> &a, bool& error) {
     return sum;
 }
 
-// syntactical sugar (input validation expected prior to these calls)
+// iostream handlers
+template <typename T>
+std::istream& operator>>(std::istream &in, Matrix<T> &obj) {
+    int m, n;
+    in >> m;
+    in >> n;
+    obj = Matrix<T>(m, n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            in >> obj[i][j];
+        }
+    }
+    return in;
+}
+
+template <typename f_T>
+std::ostream& operator<<(std::ostream &out, const Matrix<f_T> &obj) {
+    out << std::endl;
+    for (int i = 0; i < obj.Rows; ++i) {
+        out << "[";
+        for (int j = 0; j < obj.Cols; ++j) {
+            out << obj._array[i][j];
+            if (j < obj.Cols - 1) {
+                out << ", ";
+            }
+        }
+        out << "]" << std::endl;
+    }
+    out << std::endl;
+    return out;
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream &out, const std::vector<T> &obj) {
+    out << "[";
+    for (auto i = obj.begin(); i < obj.end(); ++i) {
+        out << *i;
+        if (i < obj.end() - 1) {
+            out << ", ";
+        }
+    }
+    out << "]";
+    return out;
+}
 
 // scalar multiplication
 template <typename T, typename N,
@@ -310,4 +313,13 @@ Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
     Matrix<T1> c(a);
     c -= b;
     return c;
+}
+
+// Template-specific helpers
+Matrix<double> Identity(int n) {
+    Matrix<double> a(n, n, 0);
+    for (int i = 0; i < n; ++i) {
+        a[i][i] = 1;
+    }
+    return a;
 }
