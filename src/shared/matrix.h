@@ -133,7 +133,7 @@ public:
 template<typename T>
 T Matrix<T>::_default = 0;
 
-// common operations
+// common operations and helpers
 template <typename f_T>
 Matrix<f_T> Transpose(const Matrix<f_T> &a) {
     Matrix<f_T> trans(a.Cols, a.Rows);
@@ -315,11 +315,5 @@ Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
     return c;
 }
 
-// Template-specific helpers
-Matrix<double> Identity(int n) {
-    Matrix<double> a(n, n, 0);
-    for (int i = 0; i < n; ++i) {
-        a[i][i] = 1;
-    }
-    return a;
-}
+// prototypes defined in cpp file
+Matrix<double> Identity(int);

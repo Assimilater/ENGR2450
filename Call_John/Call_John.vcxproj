@@ -71,6 +71,7 @@
     <ClCompile Include="..\src\assign3\a3p3.cpp" />
     <ClCompile Include="..\src\assign3\assign3.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\shared\matrix.cpp" />
     <ClCompile Include="..\src\shared\split.cpp" />
   </ItemGroup>
   <ItemGroup>
