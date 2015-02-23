@@ -30,6 +30,12 @@
     <ClCompile Include="..\src\shared\split.cpp">
       <Filter>_Shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p1.cpp">
+      <Filter>Assign3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p3.cpp">
+      <Filter>Assign3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\shared\centered.h">
@@ -55,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="..\src\shared\split.h">
       <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p1.h">
+      <Filter>Assign3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p3.h">
+      <Filter>Assign3</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
