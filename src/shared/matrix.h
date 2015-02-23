@@ -218,21 +218,13 @@ Matrix<T> operator*(const N &c, const Matrix<T> &a) {
 
 template <typename T, typename N,
     typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
-    Matrix<T> operator*(const Matrix<T> &a, const N &c) {
-    Matrix<T> b(a);
-    for (int i = 0; i < b.Rows; ++i) {
-        for (int j = 0; j < b.Cols; ++j) {
-            b[i][j] *= c;
-        }
-    }
-    return b;
-}
+Matrix<T> operator*(const Matrix<T> &a, const N &c) { return c * a; }
 
 // complex scalar multiplication
 template <typename T, typename N, typename C,
     typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
     typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
-    Matrix<T> operator*(const C &c, const Matrix<T> &a) {
+Matrix<T> operator*(const C &c, const Matrix<T> &a) {
     Matrix<T> b(a);
     for (int i = 0; i < b.Rows; ++i) {
         for (int j = 0; j < b.Cols; ++j) {
@@ -245,15 +237,7 @@ template <typename T, typename N, typename C,
 template <typename T, typename N, typename C,
     typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
     typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
-    Matrix<T> operator*(const Matrix<T> &a, const C &c) {
-    Matrix<T> b(a);
-    for (int i = 0; i < b.Rows; ++i) {
-        for (int j = 0; j < b.Cols; ++j) {
-            b[i][j] *= c;
-        }
-    }
-    return b;
-}
+Matrix<T> operator*(const Matrix<T> &a, const C &c) { return c * a; }
 
 // vector multiplication
 template <typename f_T>
@@ -271,9 +255,9 @@ std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
 // matrix multiplication
 template <typename T1, typename T2>
 Matrix<T1>& operator*=(Matrix<T1> &a, const Matrix<T2> &b) {
-    // Matrix multiplication is more complicated than matrix addition
-    // Because a would need to be resized, it is more efficient
-    // To use operator* here than to use this in operator*
+    // Matrix multiplication is more complicated than numeric addition
+    // Because 'a' would need to be resized, it is more efficient
+    // To use operator* here than to use '*=' in 'operator*'
     return a = a * b;
 }
 
