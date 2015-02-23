@@ -3,12 +3,13 @@
 #include <iomanip>
 #include <cmath>
 
-using namespace assign3;
+using namespace assign3::p1;
 
-void assign3::Substitute(
+void assign3::p1::Substitute(
     Matrix<double> &a,
     std::vector<double> &b,
-    std::vector<double> &x) {
+    std::vector<double> &x)
+{
     x[a.Rows - 1] = b[a.Rows - 1] / a[a.Rows - 1][a.Cols - 1];
     for (int i = a.Rows - 2; i > -1; --i) {
         double sum = 0;
@@ -19,11 +20,12 @@ void assign3::Substitute(
     }
 }
 
-void assign3::Pivot(
+void assign3::p1::Pivot(
     Matrix<double> &a,
     std::vector<double> &b,
     std::vector<double> &s,
-    int k) {
+    int k)
+{
     int p = k;
     double temp;
     double max = abs(a[k][k] / s[k]);
@@ -52,12 +54,13 @@ void assign3::Pivot(
     }
 }
 
-void assign3::Eliminate(
+void assign3::p1::Eliminate(
     Matrix<double> &a,
     std::vector<double> &b,
     std::vector<double> &s,
     double tolerance,
-    MatrixError &error) {
+    MatrixError &error)
+{
     int k = 0;
     for (; k < a.Rows - 1; ++k) {
         Pivot(a, b, s, k);
@@ -82,11 +85,12 @@ void assign3::Eliminate(
     }
 }
 
-std::vector<double> assign3::TryGauss(
+std::vector<double> assign3::p1::Gauss(
     Matrix<double> a,
     std::vector<double> &b,
     double tolerance,
-    MatrixError& error) {
+    MatrixError& error)
+{
     if (a.Rows != a.Cols || a.Rows != b.size()) {
         error = MatrixError::INV_DIM;
         return b;
@@ -125,7 +129,7 @@ void assign3::Problem1() {
     std::vector<double> x;
     MatrixError error = MatrixError::GOOD;
 
-    x = TryGauss(a, b, .0001, error);
+    x = Gauss(a, b, .0001, error);
 
     // Output the result of Gaussian eleminiation with partial pivoting
     if (error == MatrixError::GOOD) {
