@@ -65,7 +65,7 @@ void assign3::p1::Eliminate(
     for (; k < a.Rows - 1; ++k) {
         Pivot(a, b, s, k);
         if (abs(a[k][k] / s[k]) < tolerance) {
-            // Make sure the diagnals are all non-zero
+            // Make sure the diagonals are all non-zero
             error = MatrixError::SINGULAR;
             return;
         }
@@ -131,7 +131,7 @@ void assign3::Problem1() {
 
     x = Gauss(a, b, .0001, error);
 
-    // Output the result of Gaussian eleminiation with partial pivoting
+    // Output the result of Gaussian elimination with partial pivoting
     if (error == MatrixError::GOOD) {
         std::cout << "The result is: " << x << std::endl;
     } else if (error == MatrixError::INV_DIM) {

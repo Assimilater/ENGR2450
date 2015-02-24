@@ -69,6 +69,7 @@
     <ClCompile Include="..\src\assign2\assign2.cpp" />
     <ClCompile Include="..\src\assign3\a3p1.cpp" />
     <ClCompile Include="..\src\assign3\a3p3.cpp" />
+    <ClCompile Include="..\src\assign3\a3p4.cpp" />
     <ClCompile Include="..\src\assign3\assign3.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\shared\matrix.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="..\src\assign2\assign2.h" />
     <ClInclude Include="..\src\assign3\a3p1.h" />
     <ClInclude Include="..\src\assign3\a3p3.h" />
+    <ClInclude Include="..\src\assign3\a3p4.h" />
     <ClInclude Include="..\src\assign3\assign3.h" />
     <ClInclude Include="..\src\shared\centered.h" />
     <ClInclude Include="..\src\shared\eulers.h" />

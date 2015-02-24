@@ -132,7 +132,7 @@ void assign3::Problem3() {
 
     x = LuDecomp(a, b, .0001, error);
 
-    // Output the result of Gaussian eleminiation with partial pivoting
+    // Output the result of LU Decomposition
     if (error == MatrixError::GOOD) {
         std::cout << "The result is: " << x << std::endl;
     } else if (error == MatrixError::INV_DIM) {

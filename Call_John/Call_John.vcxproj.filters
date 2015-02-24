@@ -39,6 +39,9 @@
     <ClCompile Include="..\src\shared\matrix.cpp">
       <Filter>_Shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p4.cpp">
+      <Filter>Assign3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\shared\centered.h">
@@ -69,6 +72,9 @@
       <Filter>Assign3</Filter>
     </ClInclude>
     <ClInclude Include="..\src\assign3\a3p3.h">
+      <Filter>Assign3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p4.h">
       <Filter>Assign3</Filter>
     </ClInclude>
   </ItemGroup>
