@@ -8,12 +8,12 @@
 template <typename T>
 class Matrix {
 private:
-    T** _array;
+    T** _array = nullptr;
     static T _default;
 
 public:
     // Important properties
-    int Rows, Cols;
+    int Rows = 0, Cols = 0;
 
     bool isSingular() { return _array == nullptr; };
 
@@ -26,32 +26,6 @@ public:
     Matrix<T> Inverse(bool&) const;
     Matrix<T> Transpose() const;
     T Trace(bool&) const;
-
-    // Constructors and destructor
-    Matrix(int m, int n) {
-        Rows = m;
-        Cols = n;
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-            for (int j = 0; j < Cols; ++j) {
-                _array[i][j] = _default;
-            }
-        }
-    };
-
-    // Allow initialized values
-    Matrix(int m, int n, T val) {
-        Rows = m;
-        Cols = n;
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-            for (int j = 0; j < Cols; ++j) {
-                _array[i][j] = val;
-            }
-        }
-    };
 
     // Allow for C++11 initializer_list
     Matrix(std::initializer_list<std::initializer_list<T>> s) {
@@ -73,39 +47,50 @@ public:
         }
     };
 
-    // Override default operator=, constructors, and destructor
-    Matrix<T>& operator=(const Matrix<T> &a) {
-        clean();
-        copy(a);
-        return *this;
-    };
-
-    Matrix() {
-        Rows = 0;
-        Cols = 0;
-        _array = nullptr;
-    };
-
+    // Override default constructors, operator=, and destructor
+    Matrix(int m, int n) { init(m, n, _default); };
+    Matrix(int m, int n, T val) { init(m, n, val); };
+    Matrix<T>& operator=(const Matrix<T> &a) { copy(a); return *this; };
     Matrix(const Matrix<T> &a) { copy(a); }
     ~Matrix() { clean(); };
 
 private:
     void clean() {
-        for (int i = 0; i < Rows; ++i) {
-            delete[] _array[i];
+        if (_array != nullptr) {
+            for (int i = 0; i < Rows; ++i) {
+                delete[] _array[i];
+            }
+
+            delete[] _array;
         }
-        delete[] _array;
+
         _array = nullptr;
+        Rows = 0;
+        Cols = 0;
     };
 
+    void init(int m, int n, T val) {
+        clean();
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = val;
+            }
+        }
+    }
+
     void copy(const Matrix<T> &a) {
-        this->Rows = a.Rows;
-        this->Cols = a.Cols;
-        this->_array = new T*[this->Rows];
-        for (int i = 0; i < this->Rows; ++i) {
-            this->_array[i] = new T[this->Cols];
-            for (int j = 0; j < this->Cols; ++j) {
-                this->_array[i][j] = a._array[i][j];
+        clean();
+        Rows = a.Rows;
+        Cols = a.Cols;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = a._array[i][j];
             }
         }
     };
