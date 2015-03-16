@@ -91,10 +91,10 @@ public:
 
 private:
     void clean() {
-        for (int i = 0; i < Cols; ++i) {
-            delete _array[i];
+        for (int i = 0; i < Rows; ++i) {
+            delete[] _array[i];
         }
-        delete _array;
+        delete[] _array;
         _array = nullptr;
     };
 
@@ -179,7 +179,7 @@ Matrix<T> Matrix<T>::Inverse(bool& error) const {
                 }
             }
 
-            // Nomralize the row 'col'
+            // Nomralize the row so left[col][col] = 1
             temp = left[col][col];
             for (int i = 0; i < n; ++i) {
                 left[col][i] /= temp;
