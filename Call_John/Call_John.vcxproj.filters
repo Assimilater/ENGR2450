@@ -42,6 +42,9 @@
     <ClCompile Include="..\src\assign3\a3p4.cpp">
       <Filter>Assign3</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\assign4\assign4.cpp">
+      <Filter>Assign4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\shared\centered.h">
