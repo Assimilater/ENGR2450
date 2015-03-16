@@ -22,9 +22,10 @@ public:
     // public access to _array
     T* operator [](int r) { return _array[r]; };
 
-    // Common operations
-    Matrix<T> Transpose() { return Transpose(*this); };
-    T Trace() { return Trace(*this); };
+    // Common operations (implemented externally
+    Matrix<T> Inverse(bool&) const;
+    Matrix<T> Transpose() const;
+    T Trace(bool&) const;
 
     // Constructors and destructor
     Matrix(int m, int n) {
@@ -112,12 +113,6 @@ private:
 public:
     // friend templates
     template <typename f_T>
-    friend Matrix<f_T> Transpose(const Matrix<f_T>&);
-
-    template <typename f_T>
-    friend f_T Trace(const Matrix<f_T>&, bool&);
-
-    template <typename f_T>
     friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
 
     template <typename f_T>
@@ -134,27 +129,113 @@ template<typename T>
 T Matrix<T>::_default = 0;
 
 // common operations and helpers
-template <typename f_T>
-Matrix<f_T> Transpose(const Matrix<f_T> &a) {
-    Matrix<f_T> trans(a.Cols, a.Rows);
-    for (int i = 0; i < a.Rows; ++i) {
-        for (int j = 0; j < a.Cols; ++j) {
-            trans[i][j] = a._array[j][i];
+template <typename T>
+Matrix<T> Inverse(const Matrix<T> &a, bool& e) { return a.Inverse(e); }
+
+template <typename T>
+Matrix<T> Transpose(const Matrix<T> &a) { return a.Transpose(); }
+
+template <typename T>
+T Trace(const Matrix<T> &a, bool& e) { return a.Trace(e); }
+
+template <typename T>
+Matrix<T> Matrix<T>::Inverse(bool& error) const {
+    int n = Rows;
+    Matrix<T> left(*this);
+    if (!(error = n != Cols)) {
+        Matrix<T> right(n, n, 0);
+        T temp;
+        T *r_temp = new T[n],
+          *l_temp = new T[n];
+
+        // Make right the Identity Matrix
+        for (int i = 0; i < n; ++i) {
+            right[i][i] = 1;
+        }
+
+        for (int col = 0; col < n; ++col) {
+            // pivot so left[col][col] is non-zero
+            int pivot = col;
+            while (left[pivot][col] == 0) {
+                if (++pivot >= n) {
+                    error = true;
+                    delete[] r_temp;
+                    delete[] l_temp;
+                    return left;
+                }
+            }
+
+            // basic swap of rows between two matricies
+            if (pivot != col) {
+                for (int i = 0; i < n; ++i) {
+                    l_temp[i] = left[pivot][i];
+                    r_temp[i] = right[pivot][i];
+
+                    left[pivot][i] = left[col][i];
+                    right[pivot][i] = right[col][i];
+
+                    left[col][i] = l_temp[i];
+                    right[col][i] = r_temp[i];
+                }
+            }
+
+            // Nomralize the row 'col'
+            temp = left[col][col];
+            for (int i = 0; i < n; ++i) {
+                left[col][i] /= temp;
+                right[col][i] /= temp;
+            }
+
+            // Subsitute up and down
+            for (int row = 0; row < n; ++row) {
+                if (row != col) {
+                    temp = left[row][col];
+                    for (int i = 0; i < n; ++i) {
+                        left[row][i] -= temp * left[col][i];
+                        right[row][i] -= temp * right[col][i];
+                    }
+                }
+            }
+        }
+
+        // Verify the identity matrix is resulting
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (left[i][j] != (i == j ? 1 : 0)) {
+                    error = true;
+                    delete[] r_temp;
+                    delete[] l_temp;
+                    return left;
+                }
+            }
+        }
+
+        delete[] r_temp;
+        delete[] l_temp;
+        return right;
+    }
+
+    return left;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::Transpose() const {
+    Matrix<T> trans(Cols, Rows);
+    for (int i = 0; i < Rows; ++i) {
+        for (int j = 0; j < Cols; ++j) {
+            trans[j][i] = _array[i][j];
         }
     }
     return trans;
 }
 
-template <typename f_T>
-f_T Trace(const Matrix<f_T> &a, bool& error) {
-    f_T sum = a._default;
+template <typename T>
+T Matrix<T>::Trace(bool& error) const {
+    T sum = _default;
 
-    if (a.Rows != a.Cols) {
-        error = true;
-    } else {
-        error = false;
-        for (int i = 0; i < a.Rows; ++i) {
-            sum += a._array[i][i];
+    if (!(error = Rows != Cols)) {
+        for (int i = 0; i < Rows; ++i) {
+            sum += _array[i][i];
         }
     }
 
@@ -224,9 +305,11 @@ template <typename T, typename N,
 Matrix<T> operator*(const Matrix<T> &a, const N &c) { return c * a; }
 
 // complex scalar multiplication
-template <typename T, typename N, typename C,
-    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
-    typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
+template <typename N1, typename C, typename N2, typename T,
+    typename std::enable_if<std::is_arithmetic<N1>::value>::type* = nullptr,
+    typename std::enable_if<std::is_arithmetic<N2>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<C, std::complex<N1>>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<T, std::complex<N2>>::value>::type* = nullptr>
 Matrix<T> operator*(const C &c, const Matrix<T> &a) {
     Matrix<T> b(a);
     for (int i = 0; i < b.Rows; ++i) {
@@ -237,9 +320,11 @@ Matrix<T> operator*(const C &c, const Matrix<T> &a) {
     return b;
 }
 
-template <typename T, typename N, typename C,
-    typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr,
-    typename std::enable_if<std::is_same<C, std::complex<N>>::value>::type* = nullptr>
+template <typename N1, typename C, typename N2, typename T,
+    typename std::enable_if<std::is_arithmetic<N1>::value>::type* = nullptr,
+    typename std::enable_if<std::is_arithmetic<N2>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<C, std::complex<N1>>::value>::type* = nullptr,
+    typename std::enable_if<std::is_same<T, std::complex<N2>>::value>::type* = nullptr>
 Matrix<T> operator*(const Matrix<T> &a, const C &c) { return c * a; }
 
 // vector multiplication
@@ -314,6 +399,3 @@ Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
     c -= b;
     return c;
 }
-
-// prototypes defined in cpp file
-Matrix<double> Identity(int);

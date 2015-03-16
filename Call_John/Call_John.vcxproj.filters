@@ -15,6 +15,9 @@
     <Filter Include="Assign3">
       <UniqueIdentifier>{14d13ad2-293d-429c-9f0f-e3732edf2ceb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assign4">
+      <UniqueIdentifier>{094c6417-a0cf-47fe-ad0d-43d4c637110a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -35,9 +38,6 @@
     </ClCompile>
     <ClCompile Include="..\src\assign3\a3p3.cpp">
       <Filter>Assign3</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\shared\matrix.cpp">
-      <Filter>_Shared</Filter>
     </ClCompile>
     <ClCompile Include="..\src\assign3\a3p4.cpp">
       <Filter>Assign3</Filter>
@@ -76,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="..\src\assign3\a3p4.h">
       <Filter>Assign3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign4\assign4.h">
+      <Filter>Assign4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
