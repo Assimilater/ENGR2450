@@ -125,6 +125,7 @@ public:
     friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
 };
 
+// Placeholder for template static member
 template<typename T>
 T Matrix<T>::_default = 0;
 
@@ -287,6 +288,79 @@ std::ostream& operator<<(std::ostream &out, const std::vector<T> &obj) {
     return out;
 }
 
+// matrix addition
+template <typename f_T1, typename f_T2>
+Matrix<f_T1>& operator+=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) {
+            a._array[i][j] += b._array[i][j];
+        }
+    }
+
+    return a;
+}
+
+template <typename T1, typename T2>
+Matrix<T1> operator+(const Matrix<T1> &a, const Matrix<T2> &b) {
+    Matrix<T1> c(a);
+    c += b;
+    return c;
+}
+
+// matrix subtraction
+template <typename f_T1, typename f_T2>
+Matrix<f_T1>& operator-=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) {
+            a._array[i][j] -= b._array[i][j];
+        }
+    }
+
+    return a;
+}
+
+template <typename T1, typename T2>
+Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
+    Matrix<T1> c(a);
+    c -= b;
+    return c;
+}
+
+// vector multiplication
+template <typename f_T>
+std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
+    std::vector<f_T> b(a.Rows);
+    for (int i = 0; i < a.Rows; ++i) {
+        b[i] = a._default;
+        for (int j = 0; j < a.Cols; ++j) {
+            b[i] += a._array[i][j] * x[j];
+        }
+    }
+    return b;
+}
+
+// matrix multiplication
+template <typename T1, typename T2>
+Matrix<T1>& operator*=(Matrix<T1> &a, const Matrix<T2> &b) {
+    // Matrix multiplication is more complicated than numeric addition
+    // Because 'a' would need to be resized, it is more efficient
+    // To use operator* here than to use '*=' in 'operator*'
+    return a = a * b;
+}
+
+template <typename f_T1, typename f_T2>
+Matrix<f_T1> operator*(const Matrix<f_T1> &a, const Matrix<f_T2> &b) {
+    Matrix<f_T1> c(a.Rows, b.Cols, a._default);
+    for (int i = 0; i < a.Rows; ++i) {
+        for (int j = 0; j < a.Cols; ++j) { // a.Cols = b.Rows (or error)
+            for (int k = 0; k < b.Cols; ++k) {
+                c[i][k] += a._array[i][j] * b._array[j][k];
+            }
+        }
+    }
+    return c;
+}
+
 // scalar multiplication
 template <typename T, typename N,
     typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
@@ -326,76 +400,3 @@ template <typename N1, typename C, typename N2, typename T,
     typename std::enable_if<std::is_same<C, std::complex<N1>>::value>::type* = nullptr,
     typename std::enable_if<std::is_same<T, std::complex<N2>>::value>::type* = nullptr>
 Matrix<T> operator*(const Matrix<T> &a, const C &c) { return c * a; }
-
-// vector multiplication
-template <typename f_T>
-std::vector<f_T> operator*(const Matrix<f_T> &a, const std::vector<f_T> &x) {
-    std::vector<f_T> b(a.Rows);
-    for (int i = 0; i < a.Rows; ++i) {
-        b[i] = a._default;
-        for (int j = 0; j < a.Cols; ++j) {
-            b[i] += a._array[i][j] * x[j];
-        }
-    }
-    return b;
-}
-
-// matrix multiplication
-template <typename T1, typename T2>
-Matrix<T1>& operator*=(Matrix<T1> &a, const Matrix<T2> &b) {
-    // Matrix multiplication is more complicated than numeric addition
-    // Because 'a' would need to be resized, it is more efficient
-    // To use operator* here than to use '*=' in 'operator*'
-    return a = a * b;
-}
-
-template <typename f_T1, typename f_T2>
-Matrix<f_T1> operator*(const Matrix<f_T1> &a, const Matrix<f_T2> &b) {
-    Matrix<f_T1> c(a.Rows, b.Cols, a._default);
-    for (int i = 0; i < a.Rows; ++i) {
-        for (int j = 0; j < a.Cols; ++j) { // a.Cols = b.Rows (or error)
-            for (int k = 0; k < b.Cols; ++k) {
-                c[i][k] += a._array[i][j] * b._array[j][k];
-            }
-        }
-    }
-    return c;
-}
-
-// matrix addition
-template <typename f_T1, typename f_T2>
-Matrix<f_T1>& operator+=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
-    for (int i = 0; i < a.Rows; ++i) {
-        for (int j = 0; j < a.Cols; ++j) {
-            a._array[i][j] += b._array[i][j];
-        }
-    }
-
-    return a;
-}
-
-template <typename T1, typename T2>
-Matrix<T1> operator+(const Matrix<T1> &a, const Matrix<T2> &b) {
-    Matrix<T1> c(a);
-    c += b;
-    return c;
-}
-
-// matrix subtraction
-template <typename f_T1, typename f_T2>
-Matrix<f_T1>& operator-=(Matrix<f_T1> &a, const Matrix<f_T2> &b) {
-    for (int i = 0; i < a.Rows; ++i) {
-        for (int j = 0; j < a.Cols; ++j) {
-            a._array[i][j] -= b._array[i][j];
-        }
-    }
-
-    return a;
-}
-
-template <typename T1, typename T2>
-Matrix<T1> operator-(const Matrix<T1> &a, const Matrix<T2> &b) {
-    Matrix<T1> c(a);
-    c -= b;
-    return c;
-}
