@@ -18,6 +18,18 @@
     <Filter Include="Assign4">
       <UniqueIdentifier>{094c6417-a0cf-47fe-ad0d-43d4c637110a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assign4\prob1">
+      <UniqueIdentifier>{7af63ef3-0774-4108-954e-62ff5dedd8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assign3\prob1">
+      <UniqueIdentifier>{83e5b5cc-a91c-4a00-ba02-f2c5b5c05aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assign3\prob3">
+      <UniqueIdentifier>{fe6ad81e-77c5-4f8a-857f-0ea90000093e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assign3\prob4">
+      <UniqueIdentifier>{f896901a-29f1-49dc-9d28-635e1145d498}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -33,17 +45,20 @@
     <ClCompile Include="..\src\shared\split.cpp">
       <Filter>_Shared</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\assign3\a3p1.cpp">
-      <Filter>Assign3</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\assign3\a3p3.cpp">
-      <Filter>Assign3</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\assign3\a3p4.cpp">
-      <Filter>Assign3</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\assign4\assign4.cpp">
       <Filter>Assign4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p1.cpp">
+      <Filter>Assign3\prob1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p3.cpp">
+      <Filter>Assign3\prob3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign3\a3p4.cpp">
+      <Filter>Assign3\prob4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign4\a4p1.cpp">
+      <Filter>Assign4\prob1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,17 +86,20 @@
     <ClInclude Include="..\src\shared\split.h">
       <Filter>_Shared</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p1.h">
-      <Filter>Assign3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p3.h">
-      <Filter>Assign3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p4.h">
-      <Filter>Assign3</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\assign4\assign4.h">
       <Filter>Assign4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p1.h">
+      <Filter>Assign3\prob1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p3.h">
+      <Filter>Assign3\prob3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p4.h">
+      <Filter>Assign3\prob4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign4\a4p1.h">
+      <Filter>Assign4\prob1</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
