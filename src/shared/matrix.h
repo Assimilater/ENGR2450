@@ -155,7 +155,7 @@ Matrix<T> Matrix<T>::Inverse(bool& error) const {
                 }
             }
 
-            // basic swap of rows between two matricies
+            // basic swap of rows between two matrices
             if (pivot != col) {
                 for (int i = 0; i < n; ++i) {
                     temp = left[pivot][i];
