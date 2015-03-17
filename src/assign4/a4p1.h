@@ -5,7 +5,7 @@
 
 namespace assign4 {
     namespace p1 {
-        void FitData(double x, double m, double b);
+        std::vector<double> FitData(const std::vector<double>&, double, double);
     }
 
     void Problem1();
