@@ -1,7 +1,7 @@
-#include "assign4.h"
-#include "a4p1.h"
+#include "assign4.hpp"
+#include "a4p1.hpp"
 
-#include "../shared/matrix.h"
+#include "../shared/matrix.hpp"
 using namespace assign4;
 
 //-----------------------------------------------------------------------+

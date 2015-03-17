@@ -77,19 +77,19 @@
     <ClCompile Include="..\src\shared\split.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\assign1\assign1.h" />
-    <ClInclude Include="..\src\assign2\assign2.h" />
-    <ClInclude Include="..\src\assign3\a3p1.h" />
-    <ClInclude Include="..\src\assign3\a3p3.h" />
-    <ClInclude Include="..\src\assign3\a3p4.h" />
-    <ClInclude Include="..\src\assign3\assign3.h" />
-    <ClInclude Include="..\src\assign4\a4p1.h" />
-    <ClInclude Include="..\src\assign4\assign4.h" />
-    <ClInclude Include="..\src\shared\centered.h" />
-    <ClInclude Include="..\src\shared\eulers.h" />
-    <ClInclude Include="..\src\shared\helpers.h" />
-    <ClInclude Include="..\src\shared\matrix.h" />
-    <ClInclude Include="..\src\shared\split.h" />
+    <ClInclude Include="..\src\assign1\assign1.hpp" />
+    <ClInclude Include="..\src\assign2\assign2.hpp" />
+    <ClInclude Include="..\src\assign3\a3p1.hpp" />
+    <ClInclude Include="..\src\assign3\a3p3.hpp" />
+    <ClInclude Include="..\src\assign3\a3p4.hpp" />
+    <ClInclude Include="..\src\assign3\assign3.hpp" />
+    <ClInclude Include="..\src\assign4\a4p1.hpp" />
+    <ClInclude Include="..\src\assign4\assign4.hpp" />
+    <ClInclude Include="..\src\shared\centered.hpp" />
+    <ClInclude Include="..\src\shared\eulers.hpp" />
+    <ClInclude Include="..\src\shared\helpers.hpp" />
+    <ClInclude Include="..\src\shared\matrix.hpp" />
+    <ClInclude Include="..\src\shared\split.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

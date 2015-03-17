@@ -1,4 +1,4 @@
-#include "assign2.h"
+#include "assign2.hpp"
 #include <iostream>
 #include <iomanip>
 
@@ -6,8 +6,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include "..\shared\helpers.h"
-#include "..\shared\centered.h"
+#include "..\shared\helpers.hpp"
+#include "..\shared\centered.hpp"
 using namespace assign2;
 
 //---------------------------------------------------------------------------------+

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "assign3.h"
-#include "../shared/matrix.h"
+#include "assign3.hpp"
+#include "../shared/matrix.hpp"
 
 namespace assign3 {
     namespace p1 {

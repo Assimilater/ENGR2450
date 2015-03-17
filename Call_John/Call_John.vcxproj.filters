@@ -62,44 +62,44 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\shared\centered.h">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\shared\eulers.h">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\shared\helpers.h">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign1\assign1.h">
-      <Filter>Assign1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign2\assign2.h">
-      <Filter>Assign2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign3\assign3.h">
-      <Filter>Assign3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\shared\matrix.h">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\shared\split.h">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\assign4\assign4.h">
+    <ClInclude Include="..\src\assign4\assign4.hpp">
       <Filter>Assign4</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p1.h">
-      <Filter>Assign3\prob1</Filter>
+    <ClInclude Include="..\src\assign4\a4p1.hpp">
+      <Filter>Assign4\prob1</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p3.h">
-      <Filter>Assign3\prob3</Filter>
+    <ClInclude Include="..\src\assign3\assign3.hpp">
+      <Filter>Assign3</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\assign3\a3p4.h">
+    <ClInclude Include="..\src\assign3\a3p4.hpp">
       <Filter>Assign3\prob4</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\assign4\a4p1.h">
-      <Filter>Assign4\prob1</Filter>
+    <ClInclude Include="..\src\assign3\a3p3.hpp">
+      <Filter>Assign3\prob3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign3\a3p1.hpp">
+      <Filter>Assign3\prob1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign2\assign2.hpp">
+      <Filter>Assign2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign1\assign1.hpp">
+      <Filter>Assign1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\split.hpp">
+      <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\matrix.hpp">
+      <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\helpers.hpp">
+      <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\eulers.hpp">
+      <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\shared\centered.hpp">
+      <Filter>_Shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

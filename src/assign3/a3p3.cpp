@@ -1,9 +1,9 @@
-#include "a3p3.h"
+#include "a3p3.hpp"
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-#include "../shared/matrix.h"
+#include "../shared/matrix.hpp"
 
 using namespace assign3::p3;
 

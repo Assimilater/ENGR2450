@@ -1,7 +1,7 @@
-#include "assign3.h"
-#include "a3p1.h"
-#include "a3p3.h"
-#include "a3p4.h"
+#include "assign3.hpp"
+#include "a3p1.hpp"
+#include "a3p3.hpp"
+#include "a3p4.hpp"
 
 void assign3::main() {
     assign3::Problem1();

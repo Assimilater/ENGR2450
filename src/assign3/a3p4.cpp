@@ -1,12 +1,12 @@
-#include "a3p4.h"
+#include "a3p4.hpp"
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-#include "../shared/matrix.h"
+#include "../shared/matrix.hpp"
 
 // No need to duplicate code
-#include "a3p3.h"
+#include "a3p3.hpp"
 
 using namespace assign3::p4;
 
