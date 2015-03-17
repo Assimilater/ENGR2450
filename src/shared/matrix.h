@@ -139,7 +139,6 @@ Matrix<T> Matrix<T>::Inverse(bool& error) const {
 
     if (!(error = Rows != Cols)) {
         Matrix<T> right(n, n);
-        std::vector<T> r_temp(n), l_temp(n);
 
         // Make right the Identity Matrix
         for (int i = 0; i < n; ++i) {
@@ -159,14 +158,13 @@ Matrix<T> Matrix<T>::Inverse(bool& error) const {
             // basic swap of rows between two matricies
             if (pivot != col) {
                 for (int i = 0; i < n; ++i) {
-                    l_temp[i] = left[pivot][i];
-                    r_temp[i] = right[pivot][i];
-
+                    temp = left[pivot][i];
                     left[pivot][i] = left[col][i];
-                    right[pivot][i] = right[col][i];
+                    left[col][i] = temp;
 
-                    left[col][i] = l_temp[i];
-                    right[col][i] = r_temp[i];
+                    temp = right[pivot][i];
+                    right[pivot][i] = right[col][i];
+                    right[col][i] = temp;
                 }
             }
 
