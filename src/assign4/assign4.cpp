@@ -50,7 +50,7 @@ void assign4::main() {
 
     return;
     bool error = false;
-    Matrix<double> a{
+    const Matrix<double> a{
         {1, 0.2, 0.04},
         {1, 0.5, 0.25},
         {1, 0.8, 0.64},

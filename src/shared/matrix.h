@@ -17,7 +17,8 @@ public:
     bool isSingular() { return _array == nullptr; };
 
     // public access to _array
-    T* operator [](int r) { return _array[r]; };
+    T* operator [](int row) { return _array[row]; };
+    const T* operator [](int row) const { return _array[row]; };
 
     // Common operations (implemented externally)
     Matrix<T> Inverse(bool&) const;
@@ -66,6 +67,16 @@ private:
         Cols = 0;
     };
 
+    void resize(int m, int n) {
+        clean();
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+        }
+    };
+
     void init(int m, int n, T val) {
         clean();
         Rows = m;
@@ -77,7 +88,7 @@ private:
                 _array[i][j] = val;
             }
         }
-    }
+    };
 
     void copy(const Matrix<T>& a) {
         clean();
@@ -95,7 +106,7 @@ private:
 public:
     // friend templates
     template <typename f_T>
-    friend std::ostream& operator<<(std::ostream&, const Matrix<f_T>&);
+    friend std::istream& operator>>(std::istream&, Matrix<f_T>&);
 
     template <typename f_T>
     friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
@@ -231,12 +242,12 @@ T Matrix<T>::Trace(bool& error) const {
 }
 
 // iostream handlers
-template <typename T>
-std::istream& operator>>(std::istream& in, Matrix<T>& obj) {
+template <typename f_T>
+std::istream& operator>>(std::istream& in, Matrix<f_T>& obj) {
     int m, n;
     in >> m;
     in >> n;
-    obj = Matrix<T>(m, n);
+    obj.resize(m, n);
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
             in >> obj[i][j];
@@ -245,13 +256,13 @@ std::istream& operator>>(std::istream& in, Matrix<T>& obj) {
     return in;
 }
 
-template <typename f_T>
-std::ostream& operator<<(std::ostream& out, const Matrix<f_T>& obj) {
+template <typename T>
+std::ostream& operator<<(std::ostream& out, const Matrix<T>& obj) {
     out << std::endl;
     for (int i = 0; i < obj.Rows; ++i) {
         out << "[";
         for (int j = 0; j < obj.Cols; ++j) {
-            out << obj._array[i][j];
+            out << obj[i][j];
             if (j < obj.Cols - 1) {
                 out << ", ";
             }
@@ -260,6 +271,17 @@ std::ostream& operator<<(std::ostream& out, const Matrix<f_T>& obj) {
     }
     out << std::endl;
     return out;
+}
+
+template <typename T>
+std::istream& operator>>(std::istream& in, std::vector<T>& obj) {
+    int n;
+    in >> n;
+    obj.resize(n);
+    for (auto& i : obj) {
+        in >> i;
+    }
+    return in;
 }
 
 template <typename T>
