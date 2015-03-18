@@ -108,7 +108,6 @@ private:
         }
     };
 
-public:
     // friend templates
     template <typename f_T>
     friend std::istream& operator>>(std::istream&, Matrix<f_T>&);
