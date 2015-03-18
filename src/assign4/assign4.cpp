@@ -5,22 +5,15 @@
 using namespace assign4;
 
 //-----------------------------------------------------------------------+
-// void Regress                                                          |
+// LRegress Regress                                                      |
 // Determine the coefficients for the linear regression of y = mx + b    |
 //-----------------------------------------------------------------------+
-void assign4::Regress(
-    std::vector<double> x,
-    std::vector<double> y,
-    double& m,
-    double& b,
-    double& syx,
-    double& r2) {
-    double sumx = 0,
-        sumy = 0,
-        sumxy = 0,
-        sumx2 = 0,
-        st = 0,
-        sr = 0;
+LRegress assign4::Regress(const_vector x, const_vector y) {
+    LRegress lReg;
+    double
+        sumx = 0, sumy = 0,
+        sumxy = 0, sumx2 = 0,
+        st = 0, sr = 0;
 
     int n = x.size();
     for (int i = 0; i < n; ++i) {
@@ -32,18 +25,19 @@ void assign4::Regress(
 
     double xm = sumx / n;
     double ym = sumy / n;
-    m = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx * sumx);
-    b = ym - m * xm;
+    lReg.m = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx * sumx);
+    lReg.b = ym - lReg.m * xm;
 
     for (int i = 0; i < n; ++i) {
         st += (y[i] - ym) * (y[i] - ym);
-        sr += (y[i] - m * x[i] - b) * (y[i] - m * x[i] - b);
+        sr += (y[i] - lReg.m * x[i] - lReg.b) * (y[i] - lReg.m * x[i] - lReg.b);
     }
 
-    syx = sqrt(sr / (n - 2));
-    r2 = (st - sr) / st;
-}
+    lReg.syx = sqrt(sr / (n - 2));
+    lReg.r2 = (st - sr) / st;
 
+    return lReg;
+}
 
 void assign4::main() {
     Problem1();

@@ -8,11 +8,7 @@
 #include "../shared/matrix.hpp"
 using namespace assign4;
 
-std::vector<double> FitData(
-    const std::vector<double>& x,
-    double m,
-    double b)
-{
+std::vector<double> FitData(const_vector x, double m, double b) {
     int n = x.size();
     std::vector<double> y(n);
     for (int i = 0; i < n; ++i) {
@@ -21,20 +17,15 @@ std::vector<double> FitData(
     return y;
 }
 
-void PartA(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    double& m, double& b,
-    double& syx, double& r2)
-{
-    Regress(x, y, m, b, syx, r2);
-    std::vector<double> yf = FitData(x, m, b);
+void PartA(const_vector x, const_vector y) {
+    LRegress lReg = Regress(x, y);
+    std::vector<double> yf = FitData(x, lReg.m, lReg.b);
     std::cout
         << "Part A:" << std::endl << std::endl
-        << "m: " << m << std::endl
-        << "b: " << b << std::endl
-        << "syx: " << syx << std::endl
-        << "r2: " << r2 << std::endl << std::endl
+        << "m: " << lReg.m << std::endl
+        << "b: " << lReg.b << std::endl
+        << "syx: " << lReg.syx << std::endl
+        << "r2: " << lReg.r2 << std::endl << std::endl
         << std::setw(4) << "x" << std::setw(6) << "y" << std::setw(8) << "yf" << std::endl
         << "---------------------" << std::endl;
 
@@ -49,14 +40,8 @@ void PartA(
     std::cout << std::endl;
 }
 
-std::vector<double> PartB(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    double& m, double& b,
-    double& syx, double& r2,
-    std::function<double(double)> x_map,
-    std::function<double(double)> y_map)
-{
+typedef std::function<double(double)> trans;
+std::vector<double> PartB(const_vector x, const_vector y, LRegress& lReg, trans x_map, trans y_map) {
     int n = x.size();
     std::vector<double> f_x(n), f_y(n);
     for (int i = 0; i < n; ++i) {
@@ -64,14 +49,14 @@ std::vector<double> PartB(
         f_y[i] = y_map(y[i]);
     }
 
-    Regress(f_x, f_y, m, b, syx, r2);
-    std::vector<double> fit = FitData(f_x, m, b);
+    lReg = Regress(f_x, f_y);
+    std::vector<double> fit = FitData(f_x, lReg.m, lReg.b);
 
     std::cout
-        << "m: " << m << std::endl
-        << "b: " << b << std::endl
-        << "syx: " << syx << std::endl
-        << "r2: " << r2 << std::endl << std::endl
+        << "m: " << lReg.m << std::endl
+        << "b: " << lReg.b << std::endl
+        << "syx: " << lReg.syx << std::endl
+        << "r2: " << lReg.r2 << std::endl << std::endl
         << std::setw(3) << "x"
         << std::setw(6) << "y"
         << std::setw(9)  << "f_x"
@@ -96,12 +81,11 @@ std::vector<double> PartB(
 
 void assign4::Problem1() {
     // Common variables
-    double m, b, syx, r2, alpha, beta;
     std::vector<double> x {6, 7, 11, 15, 17, 21, 23, 29, 29, 37, 39};
     std::vector<double> y {29, 21, 29, 14, 21, 15, 7, 7, 13, 0, 3};
 
     // Do Part A
-    PartA(x, y, m, b, syx, r2);
+    PartA(x, y);
 
     // Do Part B
     x = {.75, 2, 3, 4, 6, 8, 8.5};
@@ -112,13 +96,15 @@ void assign4::Problem1() {
         << "Saturation-Growth Rate" << std::endl;
 
     // Saturation growth rate
-    PartB(
-        x, y, m, b, syx, r2,
+    LRegress lReg;
+    double alpha, beta;
+
+    PartB(x, y, lReg,
         [](double x) -> double { return 1 / x; },
         [](double y) -> double { return 1 / y; });
 
-    alpha = 1 / b;
-    beta = m * alpha;
+    alpha = 1 / lReg.b;
+    beta = lReg.m * alpha;
 
     std::cout
         << "alpha: " << alpha << std::endl
@@ -128,13 +114,12 @@ void assign4::Problem1() {
         << "Power Equation" << std::endl;
 
     // Power Equation
-    PartB(
-        x, y, m, b, syx, r2,
+    PartB(x, y, lReg,
         [](double x) -> double { return log10(x); },
         [](double y) -> double { return log10(y); });
 
-    alpha = pow(10, b);
-    beta = m;
+    alpha = pow(10, lReg.b);
+    beta = lReg.m;
 
     std::cout
         << "alpha: " << alpha << std::endl
