@@ -2,6 +2,7 @@
 #include <vector>
 #include <complex>
 #include <iostream>
+#include <functional>
 #include <type_traits>
 #include <initializer_list>
 
@@ -9,6 +10,7 @@ template <typename T>
 class Matrix {
 private:
     typedef std::initializer_list<std::initializer_list<T>> init_list_2d;
+    typedef std::function<double(int, int)> matrix_map;
     T** _array = nullptr;
 
 public:
@@ -22,7 +24,6 @@ public:
     T Trace(bool&) const;
 
     // Public access to _array
-    void resize(int m, int n) { reset(m, n); }
     bool isVoid() { return _array == nullptr; };
     T* operator [](int row) { return _array[row]; };
     const T* operator [](int row) const { return _array[row]; };
@@ -33,11 +34,13 @@ public:
 
     // Implement/Override construction, copy, and destruction
     Matrix(int m, int n, T val = 0) { init(m, n, val); };
+    Matrix(int m, int n, matrix_map f) { resize(m, n, f); };
     Matrix<T>& operator=(const Matrix<T>& a) { copy(a); return *this; };
     Matrix(const Matrix<T>& a) { copy(a); }
     ~Matrix() { clean(); };
 
 private:
+    // Private low-level modifiers
     void init_list(init_list_2d s) {
         // Take advantage of vector handling initalizer_list
         std::vector<std::initializer_list<T>> init = s;
@@ -84,16 +87,6 @@ private:
         }
     };
 
-    void reset(int m, int n) {
-        clean();
-        Rows = m;
-        Cols = n;
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-        }
-    };
-
     void clean() {
         if (_array != nullptr) {
             for (int i = 0; i < Rows; ++i) {
@@ -104,6 +97,39 @@ private:
         _array = nullptr;
         Cols = 0;
         Rows = 0;
+    };
+
+public:
+    // Public low-level modifiers
+    void resize(int m, int n) {
+        clean();
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+        }
+    };
+
+    void resize(int m, int n, matrix_map f) {
+        clean();
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = f(i, j);
+            }
+        }
+    }
+
+    void each(std::function<void(T&, int, int)> f) {
+        for (int i = 0; i < Rows; ++i) {
+            for (int j = 0; j < Cols; ++j) {
+                f(_array[i][j], i, j);
+            }
+        }
     };
 };
 
