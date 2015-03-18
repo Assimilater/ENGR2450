@@ -133,74 +133,77 @@ T Determinant(const Matrix<T>& a, bool& e) { return a.Determinant(e); }
 
 template <typename T>
 Matrix<T> Matrix<T>::Inverse(bool& error) const {
+    // Only deal with square matrices
+    if (Rows != Cols) {
+        error = true;
+        return *this;
+    }
+
     T temp;
     int n = Rows;
     Matrix<T> left(*this);
+    Matrix<T> right(n, n);
 
-    if (!(error = Rows != Cols)) {
-        Matrix<T> right(n, n);
-
-        // Make right the Identity Matrix
-        for (int i = 0; i < n; ++i) {
-            right[i][i] = 1;
-        }
-
-        for (int col = 0; col < n; ++col) {
-            // pivot so left[col][col] is non-zero
-            int pivot = col;
-            while (left[pivot][col] == 0) {
-                if (++pivot >= n) {
-                    error = true;
-                    return left;
-                }
-            }
-
-            // basic swap of rows between two matrices
-            if (pivot != col) {
-                for (int i = 0; i < n; ++i) {
-                    temp = left[pivot][i];
-                    left[pivot][i] = left[col][i];
-                    left[col][i] = temp;
-
-                    temp = right[pivot][i];
-                    right[pivot][i] = right[col][i];
-                    right[col][i] = temp;
-                }
-            }
-
-            // Nomralize the row so left[col][col] = 1
-            temp = left[col][col];
-            for (int i = 0; i < n; ++i) {
-                left[col][i] /= temp;
-                right[col][i] /= temp;
-            }
-
-            // Subsitute up and down
-            for (int row = 0; row < n; ++row) {
-                if (row != col) {
-                    temp = left[row][col];
-                    for (int i = 0; i < n; ++i) {
-                        left[row][i] -= temp * left[col][i];
-                        right[row][i] -= temp * right[col][i];
-                    }
-                }
-            }
-        }
-
-        // Verify the identity matrix is resulting
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (left[i][j] != (i == j ? 1 : 0)) {
-                    error = true;
-                    return left;
-                }
-            }
-        }
-
-        return right;
+    // Make the Identity Matrix
+    for (int i = 0; i < n; ++i) {
+        right[i][i] = 1;
     }
 
-    return left;
+    // Perform Gaussian Elimination column by column
+    for (int col = 0; col < n; ++col) {
+        // find first pivot row where left[pivot][col] != 0
+        int pivot = col;
+        while (left[pivot][col] == 0) {
+            if (++pivot >= n) {
+                error = true;
+                return left;
+            }
+        }
+
+        // basic swap of rows between two matrices
+        if (pivot != col) {
+            for (int i = 0; i < n; ++i) {
+                temp = left[pivot][i];
+                left[pivot][i] = left[col][i];
+                left[col][i] = temp;
+
+                temp = right[pivot][i];
+                right[pivot][i] = right[col][i];
+                right[col][i] = temp;
+            }
+        }
+
+        // Nomralize the row so left[col][col] = 1
+        temp = left[col][col];
+        for (int i = 0; i < n; ++i) {
+            left[col][i] /= temp;
+            right[col][i] /= temp;
+        }
+
+        // Subsitute up and down
+        for (int row = 0; row < n; ++row) {
+            if (row != col) {
+                temp = left[row][col];
+                for (int i = 0; i < n; ++i) {
+                    left[row][i] -= temp * left[col][i];
+                    right[row][i] -= temp * right[col][i];
+                }
+            }
+        }
+    }
+
+    // Verify the identity matrix is resulting
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (left[i][j] != (i == j ? 1 : 0)) {
+                error = true;
+                return left;
+            }
+        }
+    }
+
+    error = false;
+    return right;
 }
 
 template <typename T>
