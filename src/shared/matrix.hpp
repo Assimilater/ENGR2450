@@ -22,6 +22,7 @@ public:
     T Trace(bool&) const;
 
     // Public access to _array
+    void resize(int m, int n) { reset(m, n); }
     bool isVoid() { return _array == nullptr; };
     T* operator [](int row) { return _array[row]; };
     const T* operator [](int row) const { return _array[row]; };
@@ -37,27 +38,23 @@ public:
     ~Matrix() { clean(); };
 
 private:
-    void clean() {
-        if (_array != nullptr) {
-            for (int i = 0; i < Rows; ++i) {
-                delete[] _array[i];
-            }
-
-            delete[] _array;
+    void init_list(init_list_2d s) {
+        // Take advantage of vector handling initalizer_list
+        std::vector<std::initializer_list<T>> init = s;
+        std::vector<std::vector<T>> data;
+        for (auto i = init.begin(); i != init.end(); ++i) {
+            data.push_back(std::vector<T>(*i));
         }
 
-        _array = nullptr;
-        Rows = 0;
-        Cols = 0;
-    };
-
-    void resize(int m, int n) {
         clean();
-        Rows = m;
-        Cols = n;
+        Rows = data.size();
+        Cols = data[0].size();
         _array = new T*[Rows];
         for (int i = 0; i < Rows; ++i) {
             _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = data[i][j];
+            }
         }
     };
 
@@ -70,27 +67,6 @@ private:
             _array[i] = new T[Cols];
             for (int j = 0; j < Cols; ++j) {
                 _array[i][j] = val;
-            }
-        }
-    };
-
-    void init_list(init_list_2d s) {
-        clean();
-
-        // Take advantage of vector handling initalizer_list
-        std::vector<std::initializer_list<T>> init = s;
-        std::vector<std::vector<T>> data;
-        for (auto i = init.begin(); i != init.end(); ++i) {
-            data.push_back(std::vector<T>(*i));
-        }
-
-        Rows = data.size();
-        Cols = data[0].size();
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-            for (int j = 0; j < Cols; ++j) {
-                _array[i][j] = data[i][j];
             }
         }
     };
@@ -108,9 +84,27 @@ private:
         }
     };
 
-    // friend templates
-    template <typename f_T>
-    friend std::istream& operator>>(std::istream&, Matrix<f_T>&);
+    void reset(int m, int n) {
+        clean();
+        Rows = m;
+        Cols = n;
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+        }
+    };
+
+    void clean() {
+        if (_array != nullptr) {
+            for (int i = 0; i < Rows; ++i) {
+                delete[] _array[i];
+            }
+            delete[] _array;
+        }
+        _array = nullptr;
+        Cols = 0;
+        Rows = 0;
+    };
 };
 
 // common operations and helpers
@@ -238,11 +232,10 @@ T Matrix<T>::Trace(bool& error) const {
 }
 
 // iostream handlers
-template <typename f_T>
-std::istream& operator>>(std::istream& in, Matrix<f_T>& obj) {
+template <typename T>
+std::istream& operator>>(std::istream& in, Matrix<T>& obj) {
     int m, n;
-    in >> m;
-    in >> n;
+    in >> m >> n;
     obj.resize(m, n);
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
