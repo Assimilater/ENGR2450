@@ -8,7 +8,7 @@ using namespace assign4;
 #include <functional>
 #include "../shared/matrix.hpp"
 
-std::vector<double> FitData(const_vector x, double m, double b) {
+std::vector<double> FitData(const_vector& x, double m, double b) {
     int n = x.size();
     std::vector<double> y(n);
     for (int i = 0; i < n; ++i) {
@@ -17,7 +17,7 @@ std::vector<double> FitData(const_vector x, double m, double b) {
     return y;
 }
 
-void PartA(const_vector x, const_vector y) {
+void PartA(const_vector& x, const_vector& y) {
     LRegress lReg = Regress(x, y);
     std::vector<double> yf = FitData(x, lReg.m, lReg.b);
     std::cout
@@ -43,7 +43,7 @@ void PartA(const_vector x, const_vector y) {
 }
 
 typedef std::function<double(double)> trans;
-std::vector<double> PartB(const_vector x, const_vector y, LRegress& lReg, trans x_map, trans y_map) {
+std::vector<double> PartB(const_vector& x, const_vector& y, LRegress& lReg, trans x_map, trans y_map) {
     int n = x.size();
     std::vector<double> f_x(n), f_y(n);
     for (int i = 0; i < n; ++i) {
