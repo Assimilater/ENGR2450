@@ -15,23 +15,22 @@ public:
     // Important properties
     int Rows = 0, Cols = 0;
 
-    bool isSingular() { return _array == nullptr; };
-
-    // public access to _array
-    T* operator [](int row) { return _array[row]; };
-    const T* operator [](int row) const { return _array[row]; };
-
     // Common operations (implemented externally)
     Matrix<T> Inverse(bool&) const;
     Matrix<T> Transpose() const;
     T Determinant(bool&) const;
     T Trace(bool&) const;
 
+    // Public access to _array
+    bool isVoid() { return _array == nullptr; };
+    T* operator [](int row) { return _array[row]; };
+    const T* operator [](int row) const { return _array[row]; };
+
     // Allow for C++11 initializer_list
     Matrix(init_list_2d s) { init_list(s); };
     Matrix<T>& operator=(init_list_2d s) { init_list(s); return *this; };
 
-    // Implement/Override constructors, operator=, and destructor
+    // Implement/Override construction, copy, and destruction
     Matrix(int m, int n, T val = 0) { init(m, n, val); };
     Matrix<T>& operator=(const Matrix<T>& a) { copy(a); return *this; };
     Matrix(const Matrix<T>& a) { copy(a); }
@@ -113,15 +112,6 @@ public:
     // friend templates
     template <typename f_T>
     friend std::istream& operator>>(std::istream&, Matrix<f_T>&);
-
-    template <typename f_T>
-    friend std::vector<f_T> operator*(const Matrix<f_T>&, const std::vector<f_T>&);
-
-    template <typename f_T1, typename f_T2>
-    friend Matrix<f_T1> operator*(const Matrix<f_T1>&, const Matrix<f_T2>&);
-
-    template <typename f_T1, typename f_T2>
-    friend Matrix<f_T1>& operator+=(Matrix<f_T1>&, const Matrix<f_T2>&);
 };
 
 // common operations and helpers
@@ -305,11 +295,11 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& obj) {
 }
 
 // matrix addition
-template <typename f_T1, typename f_T2>
-Matrix<f_T1>& operator+=(Matrix<f_T1>& a, const Matrix<f_T2>& b) {
+template <typename T1, typename T2>
+Matrix<T1>& operator+=(Matrix<T1>& a, const Matrix<T2>& b) {
     for (int i = 0; i < a.Rows; ++i) {
         for (int j = 0; j < a.Cols; ++j) {
-            a._array[i][j] += b._array[i][j];
+            a[i][j] += b[i][j];
         }
     }
 
@@ -324,11 +314,11 @@ Matrix<T1> operator+(const Matrix<T1>& a, const Matrix<T2>& b) {
 }
 
 // matrix subtraction
-template <typename f_T1, typename f_T2>
-Matrix<f_T1>& operator-=(Matrix<f_T1>& a, const Matrix<f_T2>& b) {
+template <typename T1, typename T2>
+Matrix<T1>& operator-=(Matrix<T1>& a, const Matrix<T2>& b) {
     for (int i = 0; i < a.Rows; ++i) {
         for (int j = 0; j < a.Cols; ++j) {
-            a._array[i][j] -= b._array[i][j];
+            a[i][j] -= b[i][j];
         }
     }
 
@@ -343,13 +333,13 @@ Matrix<T1> operator-(const Matrix<T1>& a, const Matrix<T2>& b) {
 }
 
 // vector multiplication
-template <typename f_T>
-std::vector<f_T> operator*(const Matrix<f_T>& a, const std::vector<f_T>& x) {
-    std::vector<f_T> b(a.Rows);
+template <typename T>
+std::vector<T> operator*(const Matrix<T>& a, const std::vector<T>& x) {
+    std::vector<T> b(a.Rows);
     for (int i = 0; i < a.Rows; ++i) {
         b[i] = 0;
         for (int j = 0; j < a.Cols; ++j) {
-            b[i] += a._array[i][j] * x[j];
+            b[i] += a[i][j] * x[j];
         }
     }
     return b;
@@ -364,13 +354,13 @@ Matrix<T1>& operator*=(Matrix<T1>& a, const Matrix<T2>& b) {
     return a = a * b;
 }
 
-template <typename f_T1, typename f_T2>
-Matrix<f_T1> operator*(const Matrix<f_T1>& a, const Matrix<f_T2>& b) {
-    Matrix<f_T1> c(a.Rows, b.Cols, 0);
+template <typename T1, typename T2>
+Matrix<T1> operator*(const Matrix<T1>& a, const Matrix<T2>& b) {
+    Matrix<T1> c(a.Rows, b.Cols, 0);
     for (int i = 0; i < a.Rows; ++i) {
         for (int j = 0; j < a.Cols; ++j) { // a.Cols = b.Rows (or error)
             for (int k = 0; k < b.Cols; ++k) {
-                c[i][k] += a._array[i][j] * b._array[j][k];
+                c[i][k] += a[i][j] * b[j][k];
             }
         }
     }
