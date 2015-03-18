@@ -1,12 +1,12 @@
 #include "a4p1.hpp"
+#include "assign4.hpp"
+using namespace assign4;
+
 #include <math.h>
 #include <vector>
 #include <iomanip>
 #include <functional>
-
-#include "assign4.hpp"
 #include "../shared/matrix.hpp"
-using namespace assign4;
 
 std::vector<double> FitData(const_vector x, double m, double b) {
     int n = x.size();
@@ -26,7 +26,9 @@ void PartA(const_vector x, const_vector y) {
         << "b: " << lReg.b << std::endl
         << "syx: " << lReg.syx << std::endl
         << "r2: " << lReg.r2 << std::endl << std::endl
-        << std::setw(4) << "x" << std::setw(6) << "y" << std::setw(8) << "yf" << std::endl
+        << std::setw(4) << "x"
+        << std::setw(6) << "y"
+        << std::setw(8) << "yf" << std::endl
         << "---------------------" << std::endl;
 
     int n = x.size();
@@ -80,6 +82,8 @@ std::vector<double> PartB(const_vector x, const_vector y, LRegress& lReg, trans 
 }
 
 void assign4::Problem1() {
+    std::cout << "Problem 1:" << std::endl;
+
     // Common variables
     std::vector<double> x {6, 7, 11, 15, 17, 21, 23, 29, 29, 37, 39};
     std::vector<double> y {29, 21, 29, 14, 21, 15, 7, 7, 13, 0, 3};
