@@ -8,6 +8,7 @@
 template <typename T>
 class Matrix {
 private:
+    typedef std::initializer_list<std::initializer_list<T>> init_list_2d;
     T** _array = nullptr;
 
 public:
@@ -27,24 +28,8 @@ public:
     T Trace(bool&) const;
 
     // Allow for C++11 initializer_list
-    Matrix(std::initializer_list<std::initializer_list<T>> s) {
-        // Take advantage of vector handling initalizer_list
-        std::vector<std::initializer_list<T>> init = s;
-        std::vector<std::vector<T>> data;
-        for (auto i = init.begin(); i != init.end(); ++i) {
-            data.push_back(std::vector<T>(*i));
-        }
-
-        Rows = data.size();
-        Cols = data[0].size();
-        _array = new T*[Rows];
-        for (int i = 0; i < Rows; ++i) {
-            _array[i] = new T[Cols];
-            for (int j = 0; j < Cols; ++j) {
-                _array[i][j] = data[i][j];
-            }
-        }
-    };
+    Matrix(init_list_2d s) { init_list(s); };
+    Matrix<T>& operator=(init_list_2d s) { init_list(s); return *this; };
 
     // Implement/Override constructors, operator=, and destructor
     Matrix(int m, int n, T val = 0) { init(m, n, val); };
@@ -86,6 +71,27 @@ private:
             _array[i] = new T[Cols];
             for (int j = 0; j < Cols; ++j) {
                 _array[i][j] = val;
+            }
+        }
+    };
+
+    void init_list(init_list_2d s) {
+        clean();
+
+        // Take advantage of vector handling initalizer_list
+        std::vector<std::initializer_list<T>> init = s;
+        std::vector<std::vector<T>> data;
+        for (auto i = init.begin(); i != init.end(); ++i) {
+            data.push_back(std::vector<T>(*i));
+        }
+
+        Rows = data.size();
+        Cols = data[0].size();
+        _array = new T*[Rows];
+        for (int i = 0; i < Rows; ++i) {
+            _array[i] = new T[Cols];
+            for (int j = 0; j < Cols; ++j) {
+                _array[i][j] = data[i][j];
             }
         }
     };
