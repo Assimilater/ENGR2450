@@ -16,16 +16,11 @@ std::vector<double> NLRegress(Matrix<double> Z, const_vector& y, bool& e) {
     return ZI * (ZT * y);
 }
 
-Matrix<double> BuildZP(const_vector& x, int power) {
-    Matrix<double> Z(x.size(), power + 1, [&x](int r, int c) {
-        return pow(x[r], c);
-    });
-    return Z;
-}
-
 void PrintFit(const_vector& x, const_vector& y, int power) {
     bool error = false;
-    Matrix<double>Z = BuildZP(x, power);
+    Matrix<double>Z(x.size(), power + 1, [&x](int r, int c) {
+        return pow(x[r], c);
+    });
 
     std::vector<double>
         a = NLRegress(Z, y, error),
