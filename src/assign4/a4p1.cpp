@@ -6,7 +6,6 @@ using namespace assign4;
 #include <vector>
 #include <iomanip>
 #include <functional>
-#include "../shared/matrix.hpp"
 
 std::vector<double> FitData(const_vector& x, double m, double b) {
     int n = x.size();

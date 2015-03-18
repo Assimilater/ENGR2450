@@ -6,15 +6,6 @@ using namespace assign4;
 #include <vector>
 #include <iomanip>
 #include <functional>
-#include "../shared/matrix.hpp"
-
-std::vector<double> NLRegress(Matrix<double> Z, const_vector& y, bool& e) {
-    if (y.size() != Z.Rows) { e = true; return y; }
-    Matrix<double> ZT = Z.Transpose();
-    Matrix<double> ZI = Inverse(ZT * Z, e);
-    if (e) { return y; }
-    return ZI * (ZT * y);
-}
 
 void PrintFit(const_vector& x, const_vector& y, int power) {
     bool error = false;

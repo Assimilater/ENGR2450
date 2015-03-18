@@ -1,6 +1,7 @@
 #include "assign4.hpp"
 #include "a4p1.hpp"
 #include "a4p2.hpp"
+#include "a4p3.hpp"
 
 #include "../shared/matrix.hpp"
 using namespace assign4;
@@ -40,7 +41,20 @@ LRegress assign4::Regress(const_vector& x, const_vector& y) {
     return lReg;
 }
 
+//-----------------------------------------------------------------------+
+// std::vector<double> NLRegress                                         |
+// Determine the coefficients for systems with many variables            |
+//-----------------------------------------------------------------------+
+std::vector<double> assign4::NLRegress(Matrix<double> Z, const_vector& y, bool& e) {
+    if (y.size() != Z.Rows) { e = true; return y; }
+    Matrix<double> ZT = Z.Transpose();
+    Matrix<double> ZI = Inverse(ZT * Z, e);
+    if (e) { return y; }
+    return ZI * (ZT * y);
+}
+
 void assign4::main() {
     //Problem1();
-    Problem2();
+    //Problem2();
+    Problem3();
 }
