@@ -173,14 +173,14 @@ Matrix<T> Matrix<T>::Inverse(bool& error) const {
             }
         }
 
-        // Nomralize the row so left[col][col] = 1
+        // Normalize the row so left[col][col] = 1
         temp = left[col][col];
         for (int i = 0; i < n; ++i) {
             left[col][i] /= temp;
             right[col][i] /= temp;
         }
 
-        // Subsitute up and down
+        // Substitute up and down
         for (int row = 0; row < n; ++row) {
             if (row != col) {
                 temp = left[row][col];
