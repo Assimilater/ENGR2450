@@ -1,8 +1,11 @@
 #include "a4p1.hpp"
 #include <math.h>
+#include <vector>
 #include <iomanip>
 #include <functional>
 
+#include "assign4.hpp"
+#include "../shared/matrix.hpp"
 using namespace assign4;
 
 std::vector<double> FitData(
