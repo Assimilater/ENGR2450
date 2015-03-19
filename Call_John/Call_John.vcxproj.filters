@@ -36,6 +36,9 @@
     <Filter Include="Assign4\prob3">
       <UniqueIdentifier>{f205eae4-f962-467e-9dec-1daa1137044f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assign4\prob4">
+      <UniqueIdentifier>{7cda6c22-cc94-4e17-9ad4-4449e9c31e62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="..\src\assign4\a4p3.cpp">
       <Filter>Assign4\prob3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign4\a4p4.cpp">
+      <Filter>Assign4\prob4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="..\src\assign4\a4p3.hpp">
       <Filter>Assign4\prob3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign4\a4p4.hpp">
+      <Filter>Assign4\prob4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

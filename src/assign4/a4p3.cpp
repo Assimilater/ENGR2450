@@ -2,7 +2,6 @@
 #include "assign4.hpp"
 using namespace assign4;
 
-#include <math.h>
 #include <vector>
 #include <iomanip>
 #include <functional>

@@ -2,6 +2,7 @@
 #include "a4p1.hpp"
 #include "a4p2.hpp"
 #include "a4p3.hpp"
+#include "a4p4.hpp"
 
 #include "../shared/matrix.hpp"
 using namespace assign4;
@@ -56,5 +57,6 @@ std::vector<double> assign4::NLRegress(Matrix<double> Z, const_vector& y, bool& 
 void assign4::main() {
     //Problem1();
     //Problem2();
-    Problem3();
+    //Problem3();
+    Problem4();
 }
