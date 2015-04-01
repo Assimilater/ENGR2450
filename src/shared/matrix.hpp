@@ -24,20 +24,20 @@ public:
     T Trace(bool&) const;
 
     // Public access to _array
-    bool isVoid() { return _array == nullptr; };
-    T* operator [](int row) { return _array[row]; };
-    const T* operator [](int row) const { return _array[row]; };
+    bool isVoid() { return _array == nullptr; }
+    T* operator [](int row) { return _array[row]; }
+    const T* operator [](int row) const { return _array[row]; }
 
     // Allow for C++11 initializer_list
-    Matrix(init_list_2d s) { init_list(s); };
-    Matrix<T>& operator=(init_list_2d s) { init_list(s); return *this; };
+    Matrix(init_list_2d s) { init_list(s); }
+    Matrix<T>& operator=(init_list_2d s) { init_list(s); return *this; }
 
     // Implement/Override construction, copy, and destruction
-    Matrix(int m, int n, T val = 0) { init(m, n, val); };
-    Matrix(int m, int n, matrix_map f) { resize(m, n, f); };
-    Matrix<T>& operator=(const Matrix<T>& a) { copy(a); return *this; };
+    Matrix(int m, int n, T val = 0) { init(m, n, val); }
+    Matrix(int m, int n, matrix_map f) { resize(m, n, f); }
+    Matrix<T>& operator=(const Matrix<T>& a) { copy(a); return *this; }
     Matrix(const Matrix<T>& a) { copy(a); }
-    ~Matrix() { clean(); };
+    ~Matrix() { clean(); }
 
 private:
     // Private low-level modifiers
@@ -59,12 +59,10 @@ private:
                 _array[i][j] = data[i][j];
             }
         }
-    };
-
+    }
     void init(int m, int n, T val) {
         clean();
-        Rows = m;
-        Cols = n;
+        Rows = m; Cols = n;
         _array = new T*[Rows];
         for (int i = 0; i < Rows; ++i) {
             _array[i] = new T[Cols];
@@ -72,8 +70,7 @@ private:
                 _array[i][j] = val;
             }
         }
-    };
-
+    }
     void copy(const Matrix<T>& a) {
         clean();
         Rows = a.Rows;
@@ -85,8 +82,7 @@ private:
                 _array[i][j] = a._array[i][j];
             }
         }
-    };
-
+    }
     void clean() {
         if (_array != nullptr) {
             for (int i = 0; i < Rows; ++i) {
@@ -97,24 +93,21 @@ private:
         _array = nullptr;
         Cols = 0;
         Rows = 0;
-    };
+    }
 
 public:
     // Public low-level modifiers
     void resize(int m, int n) {
         clean();
-        Rows = m;
-        Cols = n;
+        Rows = m; Cols = n;
         _array = new T*[Rows];
         for (int i = 0; i < Rows; ++i) {
             _array[i] = new T[Cols];
         }
-    };
-
+    }
     void resize(int m, int n, matrix_map f) {
         clean();
-        Rows = m;
-        Cols = n;
+        Rows = m; Cols = n;
         _array = new T*[Rows];
         for (int i = 0; i < Rows; ++i) {
             _array[i] = new T[Cols];
@@ -123,14 +116,29 @@ public:
             }
         }
     }
-
     void each(std::function<void(T&, int, int)> f) {
         for (int i = 0; i < Rows; ++i) {
             for (int j = 0; j < Cols; ++j) {
                 f(_array[i][j], i, j);
             }
         }
-    };
+    }
+
+    // Copy-to-vector row/col accessors
+    const std::vector<T> Row(int n) const {
+        std::vector<T> row(Cols);
+        for (int i = 0; i < Cols; ++i) {
+            row[i] = _array[n][i];
+        }
+        return row;
+    }
+    const std::vector<T> Col(int n) const {
+        std::vector<T> col(Rows);
+        for (int i = 0; i < Rows; ++i) {
+            col[i] = _array[i][n];
+        }
+        return col;
+    }
 };
 
 // common operations and helpers
