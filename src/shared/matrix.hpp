@@ -1,119 +1,10 @@
 #pragma once
 #include <vector>
-#include <memory>
 #include <complex>
 #include <iostream>
 #include <functional>
 #include <type_traits>
 #include <initializer_list>
-
-template <typename T>
-class Data {
-private:
-    std::shared_ptr<T> _value = nullptr;
-    Data<T>& operator=(T s) { _value = std::make_shared<T>(s); return *this; }
-    Data<T>& operator=(Data<T>& p) { _value = p._value; return *this; }
-    Data<T>& operator=(const Data<T>& p) { _value = std::make_shared<T>(p._value); return *this; }
-
-    bool isVoid() { return _array == nullptr; }
-    Data(T val) { _value = std::make_shared<T>(s); }
-};
-
-template <typename T>
-class Vector {
-private:
-    typedef std::initializer_list<T> init_list_1d;
-    typedef std::function<double(int)> vector_map;
-    T* _array = nullptr;
-
-public:
-    // Important properties
-    int Size = 0;
-
-    // Public access to _array
-    bool isVoid() { return _array == nullptr; }
-    T* operator[](int n) { return _array[n]; }
-    const T* operator[](int n) const { return _array[n]; }
-
-    // Allow for C++11 initializer_list
-    Vector(init_list_1d s) { init_list(s); }
-    Vector<T>& operator=(init_list s) { init_list(s); return *this; }
-
-    // Implement/Override construction, copy, and destruction
-    Vector<T>& operator=(const Vector<T>& a) { copy(a); return *this; }
-    Vector<T>& operator=(const std::vector<T>& a) { copy(a); return *this; }
-    Vector(const Vector<T>& a) { copy(a); }
-    Vector(const std::vector<T>& a) { copy(a); }
-    Vector(int n, vector_map f) { resize(n, f); }
-    Vector(int n, T val = 0) { init(n, val); }
-    ~Vector() { clean(); }
-
-private:
-    // Private low-level modifiers
-    void init_list(init_list_1d s) {
-        // Take advantage of vector handling initalizer_list
-        std::vector<T> data = s;
-
-        clean();
-        Size = data.size();
-        _array = new T*[Size];
-        for (int i = 0; i < Size; ++i) {
-            _array[i] = data[i];
-        }
-    }
-    void init(int n, T val) {
-        clean();
-        Size = n;
-        _array = new T*[Size];
-        for (int i = 0; i < Size; ++i) {
-            _array[i] = val;
-        }
-    }
-    void copy(const Vector<T>& a) {
-        clean();
-        Size = a.Size;
-        _array = new T*[Size];
-        for (int i = 0; i < Size; ++i) {
-            _array[i] = a._array[i];
-        }
-    }
-    void copy(const std::vector<T>& a) {
-        clean();
-        Size = a.size();
-        _array = new T*[Size];
-        for (int i = 0; i < Size; ++i) {
-            _array[i] = a[i];
-        }
-    }
-    void clean() {
-        if (_array != nullptr) {
-            delete[] _array;
-        }
-        _array = nullptr;
-        Size = 0;
-    }
-
-public:
-    // Public low-level modifiers
-    void resize(int n) {
-        clean();
-        Size = n;
-        _array = new T*[Size];
-    }
-    void resize(int n, vector_map f) {
-        clean();
-        Size = n;
-        _array = new T*[Size];
-        for (int i = 0; i < Size; ++i) {
-            _array[i] = f(i);
-        }
-    }
-    void each(std::function<void(T&, int)> f) {
-        for (int i = 0; i < Size; ++i) {
-            f(_array[i], i);
-        }
-    }
-};
 
 template <typename T>
 class Matrix {
@@ -169,6 +60,7 @@ private:
             }
         }
     }
+
     void init(int m, int n, T val) {
         clean();
         Rows = m; Cols = n;
@@ -180,6 +72,7 @@ private:
             }
         }
     }
+
     void copy(const Matrix<T>& a) {
         clean();
         Rows = a.Rows;
@@ -192,6 +85,7 @@ private:
             }
         }
     }
+
     void clean() {
         if (_array != nullptr) {
             for (int i = 0; i < Rows; ++i) {
@@ -214,6 +108,7 @@ public:
             _array[i] = new T[Cols];
         }
     }
+
     void resize(int m, int n, matrix_map f) {
         clean();
         Rows = m; Cols = n;
@@ -225,28 +120,13 @@ public:
             }
         }
     }
+
     void each(std::function<void(T&, int, int)> f) {
         for (int i = 0; i < Rows; ++i) {
             for (int j = 0; j < Cols; ++j) {
                 f(_array[i][j], i, j);
             }
         }
-    }
-
-    // Copy-to-vector row/col accessors
-    const std::vector<T> Row(int n) const {
-        std::vector<T> row(Cols);
-        for (int i = 0; i < Cols; ++i) {
-            row[i] = _array[n][i];
-        }
-        return row;
-    }
-    const std::vector<T> Col(int n) const {
-        std::vector<T> col(Rows);
-        for (int i = 0; i < Rows; ++i) {
-            col[i] = _array[i][n];
-        }
-        return col;
     }
 };
 
