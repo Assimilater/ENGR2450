@@ -131,7 +131,9 @@ void Prob5() {
     std::cout << "Problem 5: " << Trapm(v, p) << std::endl << std::endl;
 }
 void Prob6() {
-
+    const std::vector<double> t{0, 10, 20, 30, 35, 40, 45, 50};
+    const std::vector<double> c{10, 35, 55, 52, 40, 37, 32, 34};
+    std::cout << "Problem 6: " << 4 * Trapm(t, c) << std::endl << std::endl;
 }
 #pragma endregion
 
