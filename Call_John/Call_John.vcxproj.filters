@@ -84,6 +84,9 @@
     <ClCompile Include="..\src\assign5\assign5.cpp">
       <Filter>Assign5</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\shared\helpers.cpp">
+      <Filter>_Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\assign4\assign4.hpp">
@@ -117,9 +120,6 @@
       <Filter>_Shared</Filter>
     </ClInclude>
     <ClInclude Include="..\src\shared\helpers.hpp">
-      <Filter>_Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\shared\eulers.hpp">
       <Filter>_Shared</Filter>
     </ClInclude>
     <ClInclude Include="..\src\shared\centered.hpp">

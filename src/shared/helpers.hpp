@@ -1,12 +1,9 @@
 #pragma once
+#include <vector>
+#include <unordered_map>
+#include <functional>
 
-//---------------------------------------------------------------------------------+
-// void Powers                                                                     |
-// Populate an array with values such that list[i] = base^i                        |
-//---------------------------------------------------------------------------------+
-void Powers(double* list, int size, double base) {
-    list[0] = 1;
-    for (int i = 1; i < size; ++i) {
-        list[i] = list[i - 1] * base;
-    }
-}
+void Powers(double*, int, double);
+void Power(double, double, std::vector<double>&);
+
+std::unordered_map<double, double> Eulers(std::function<double(double, double)>, double, double, double, double);

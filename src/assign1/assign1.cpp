@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <math.h>
 
-#include "..\shared\eulers.hpp"
+#include "..\shared\helpers.hpp"
 using namespace assign1;
 
 double assign1::singularity(double x, double a, double n) {
