@@ -1,10 +1,23 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include <complex>
 #include <iostream>
 #include <functional>
 #include <type_traits>
 #include <initializer_list>
+
+template <typename T>
+class Data {
+private:
+    std::shared_ptr<T> _value = nullptr;
+    Data<T>& operator=(T s) { _value = std::make_shared<T>(s); return *this; }
+    Data<T>& operator=(Data<T>& p) { _value = p._value; return *this; }
+    Data<T>& operator=(const Data<T>& p) { _value = std::make_shared<T>(p._value); return *this; }
+
+    bool isVoid() { return _array == nullptr; }
+    Data(T val) { _value = std::make_shared<T>(s); }
+};
 
 template <typename T>
 class Vector {
