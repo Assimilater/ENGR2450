@@ -116,11 +116,10 @@ void Prob3() {
     std::cout << "n = 20 --> I = " << SimpInt(y, h) << std::endl << std::endl;
 }
 void Prob4() {
-    const int C = 100000;
     const double h = 0.2;
     const std::vector<double> y{0.2, 0.3683, 0.3819, 0.2282, 0.0486, 0.0082, 0.1441};
 
-    std::cout << "Problem 4: " <<  C * SimpInt(y, h) << std::endl << std::endl;
+    std::cout << "Problem 4: " <<  100 * SimpInt(y, h) << std::endl << std::endl;
 }
 #pragma endregion
 
