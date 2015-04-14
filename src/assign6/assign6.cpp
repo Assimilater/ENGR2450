@@ -41,9 +41,9 @@ void assign6::main() {
     std::cout << std::left
         << std::setw(10) << "t" << std::setw(10) << "p" << std::endl
         << "--------------------" << std::endl;
-    for (decimal year = 1950; year < 2000; year += 10) {
+    for (decimal year = 1950; year <= 2000; year += 10) {
         std::cout
-            << std::setw(10) << year.getValue()
+            << std::setw(10) << (double)year
             << std::setbase(10) << results[year] << std::endl;
     }
 }

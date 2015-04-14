@@ -79,6 +79,7 @@
     <ClCompile Include="..\src\assign5\assign5.cpp" />
     <ClCompile Include="..\src\assign6\assign6.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\shared\decimal.cpp" />
     <ClCompile Include="..\src\shared\helpers.cpp" />
     <ClCompile Include="..\src\shared\split.cpp" />
   </ItemGroup>

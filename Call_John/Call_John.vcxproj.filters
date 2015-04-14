@@ -93,6 +93,9 @@
     <ClCompile Include="..\src\assign6\assign6.cpp">
       <Filter>Assign6</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\shared\decimal.cpp">
+      <Filter>_Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\assign4\assign4.hpp">

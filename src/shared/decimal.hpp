@@ -1,38 +1,35 @@
 #pragma once
+#include <iostream>
 #include <algorithm>
 #include <type_traits>
 #include <stdint.h>
 #include <vector>
 
-namespace dec {
-    int pow10(int pow) {
-        static std::vector<int> list{1, 10, 100, 1000, 10000, 100000, 1000000};
-        static int n = list.size() - 1;
-        while (n < pow) {
-            list.push_back(10 * list[n - 1]); ++n;
-        }
-        return list[pow];
-    }
-}
+class decimal;
+namespace dec { int pow10(int); }
+std::istream& operator>>(std::istream&, decimal&);
+std::ostream& operator<<(std::ostream&, const decimal&);
 
 class decimal {
 private:
-    int64_t value;
-    unsigned int radix;
+    typedef int64_t v_type;
+    typedef unsigned int r_type;
+
+    v_type value;
+    r_type radix;
 
 public:
     decimal() : value(0), radix(0) {}
     decimal(const decimal& obj) { value = obj.value; radix = obj.radix; }
     decimal& operator=(const decimal& obj) { value = obj.value; radix = obj.radix; return *this; }
 
-    double getValue() const { double v(value); return v / dec::pow10(radix); }
-    int getRadix() const { return radix; }
-    void setRadix(unsigned int r) {
-        if (r > radix) { value *= dec::pow10(r - radix); radix = r; }
-        if (r < radix) { value = ((value / dec::pow10(radix + 1 - r)) + 5) / 10; radix = r; }
-    }
+    r_type getRadix() const { return radix; }
+    void setRadix(r_type);
 
-    // Convert constructors
+    // Primitive Type Conversions
+    template <typename N, typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
+    explicit operator N() const { return (N)value / dec::pow10(radix); }
+
     template <typename N, typename std::enable_if<std::is_arithmetic<N>::value>::type* = nullptr>
     decimal(const N& n, int r) { value = (n * dec::pow10(r + 1) + 5) / 10; radix = r; }
 
@@ -46,35 +43,25 @@ public:
         int temp = (int)r;
         while(temp != 0) {
             ++radix;
-            value *= 10;
-
-            value += temp;
+            value = (value * 10) + temp;
             r = (r - temp) * 10;
             temp = (int)r;
         }
     }
 
     // Comparison operators
-    bool operator==(const decimal& n) const { decimal t(n); t.setRadix(radix); return value == t.value; }
-    bool operator!=(const decimal& n) const { decimal t(n); t.setRadix(radix); return value != t.value; }
-    bool operator<(const decimal& n) const { decimal t(n); t.setRadix(radix); return value < t.value; }
-    bool operator<=(const decimal& n) const { decimal t(n); t.setRadix(radix); return value <= t.value; }
-    bool operator>(const decimal& n) const { decimal t(n); t.setRadix(radix); return value > t.value; }
-    bool operator>=(const decimal& n) const { decimal t(n); t.setRadix(radix); return value >= t.value; }
-
-    // Compound Arithmetic operators
-    decimal& operator+=(const decimal& n) {
-        if (n.radix > radix) { setRadix(n.radix); }
-        value += n.value * dec::pow10(radix - n.radix);
-        return *this;
-    }
-    decimal& operator-=(const decimal& n) {
-        if (n.radix > radix) { setRadix(n.radix); }
-        value -= n.value * dec::pow10(radix - n.radix);
-        return *this;
-    }
+    bool operator==(const decimal& n) const { decimal t(*this); t -= n; return t.value == 0; }
+    bool operator!=(const decimal& n) const { decimal t(*this); t -= n; return t.value != 0; }
+    bool operator<(const decimal& n) const { decimal t(*this); t -= n; return t.value < 0; }
+    bool operator<=(const decimal& n) const { decimal t(*this); t -= n; return t.value <= 0; }
+    bool operator>(const decimal& n) const { decimal t(*this); t -= n; return t.value > 0; }
+    bool operator>=(const decimal& n) const { decimal t(*this); t -= n; return t.value >= 0; }
 
     // Arithmetic Operators
     decimal operator+(const decimal& n) const { decimal t(*this); return t += n; }
     decimal operator-(const decimal& n) const { decimal t(*this); return t -= n; }
+
+    // Compound Arithmetic operators
+    decimal& operator+=(const decimal&);
+    decimal& operator-=(const decimal&);
 };
