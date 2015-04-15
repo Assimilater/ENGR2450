@@ -52,7 +52,7 @@ Table RK4(ODE f, Point init, decimal t_final, double h) {
 }
 
 void assign6::Prob4() {
-    const double sigma = 10, b = 2.66666667, r = 28;
+    const double sigma = 10, b = 2.666667, r = 28;
     ODE dsdt = [&sigma, &b, &r](const decimal& t, const s3eqs& s) {
         s3eqs ds;
         ds.x = -sigma * s.x + sigma * s.y;
