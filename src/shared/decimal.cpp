@@ -27,7 +27,7 @@ void decimal::setRadix(r_type r) {
 }
 
 
-decimal& decimal::operator += (const decimal& n) {
+decimal& decimal::operator+= (const decimal& n) {
     if (n.radix > radix) { setRadix(n.radix); }
     value += n.value * dec::pow10(radix - n.radix);
     return *this;

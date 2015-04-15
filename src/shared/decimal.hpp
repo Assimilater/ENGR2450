@@ -50,18 +50,26 @@ public:
     }
 
     // Comparison operators
-    bool operator==(const decimal& n) const { decimal t(*this); t -= n; return t.value == 0; }
-    bool operator!=(const decimal& n) const { decimal t(*this); t -= n; return t.value != 0; }
-    bool operator<(const decimal& n) const { decimal t(*this); t -= n; return t.value < 0; }
-    bool operator<=(const decimal& n) const { decimal t(*this); t -= n; return t.value <= 0; }
-    bool operator>(const decimal& n) const { decimal t(*this); t -= n; return t.value > 0; }
-    bool operator>=(const decimal& n) const { decimal t(*this); t -= n; return t.value >= 0; }
+    bool operator==(const decimal& n) const { decimal t = *this - n; return t.value == 0; }
+    bool operator!=(const decimal& n) const { decimal t = *this - n; return t.value != 0; }
+    bool operator< (const decimal& n) const { decimal t = *this - n; return t.value <  0; }
+    bool operator<=(const decimal& n) const { decimal t = *this - n; return t.value <= 0; }
+    bool operator> (const decimal& n) const { decimal t = *this - n; return t.value >  0; }
+    bool operator>=(const decimal& n) const { decimal t = *this - n; return t.value >= 0; }
 
     // Arithmetic Operators
-    decimal operator+(const decimal& n) const { decimal t(*this); return t += n; }
-    decimal operator-(const decimal& n) const { decimal t(*this); return t -= n; }
+    friend decimal operator+(const decimal& l, const decimal& r) { return decimal(l) += r; }
+    friend decimal operator-(const decimal& l, const decimal& r) { return decimal(l) -= r; }
 
-    // Compound Arithmetic operators
+    // Compound Arithmetic Operators
     decimal& operator+=(const decimal&);
     decimal& operator-=(const decimal&);
+
+    // Multiplicative Operators
+    friend decimal operator*(const decimal& l, const decimal& r) { return (double)l * (double)r; }
+    friend decimal operator/(const decimal& l, const decimal& r) { return (double)r * (double)r; }
+
+    // Compound Multiplicative Operators
+    decimal& operator*=(const decimal& n) { *this = *this * n; return *this; }
+    decimal& operator/=(const decimal& n) { *this = *this / n; return *this; }
 };

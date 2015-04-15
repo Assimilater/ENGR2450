@@ -77,6 +77,9 @@
     <ClCompile Include="..\src\assign4\a4p4.cpp" />
     <ClCompile Include="..\src\assign4\assign4.cpp" />
     <ClCompile Include="..\src\assign5\assign5.cpp" />
+    <ClCompile Include="..\src\assign6\a6p1.cpp" />
+    <ClCompile Include="..\src\assign6\a6p4.cpp" />
+    <ClCompile Include="..\src\assign6\a6p5.cpp" />
     <ClCompile Include="..\src\assign6\assign6.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\shared\decimal.cpp" />
@@ -96,6 +99,9 @@
     <ClInclude Include="..\src\assign4\a4p4.hpp" />
     <ClInclude Include="..\src\assign4\assign4.hpp" />
     <ClInclude Include="..\src\assign5\assign5.hpp" />
+    <ClInclude Include="..\src\assign6\a6p1.hpp" />
+    <ClInclude Include="..\src\assign6\a6p4.hpp" />
+    <ClInclude Include="..\src\assign6\a6p5.hpp" />
     <ClInclude Include="..\src\assign6\assign6.hpp" />
     <ClInclude Include="..\src\shared\centered.hpp" />
     <ClInclude Include="..\src\shared\decimal.hpp" />

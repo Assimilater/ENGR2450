@@ -45,6 +45,15 @@
     <Filter Include="Assign6">
       <UniqueIdentifier>{1e66bce3-7d5f-49a1-8dc2-548443f435f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assign6\prob1">
+      <UniqueIdentifier>{16ff98be-0a4f-4bc0-aa65-d80ca3cb3071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assign6\prob4">
+      <UniqueIdentifier>{efd9b134-6667-4e57-ace8-7c3eaaacd227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assign6\prob5">
+      <UniqueIdentifier>{dfa52a0c-2713-4cae-a07e-c491e5da584c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -95,6 +104,15 @@
     </ClCompile>
     <ClCompile Include="..\src\shared\decimal.cpp">
       <Filter>_Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign6\a6p1.cpp">
+      <Filter>Assign6\prob1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign6\a6p4.cpp">
+      <Filter>Assign6\prob4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assign6\a6p5.cpp">
+      <Filter>Assign6\prob5</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +169,15 @@
     </ClInclude>
     <ClInclude Include="..\src\shared\decimal.hpp">
       <Filter>_Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign6\a6p1.hpp">
+      <Filter>Assign6\prob1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign6\a6p4.hpp">
+      <Filter>Assign6\prob4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assign6\a6p5.hpp">
+      <Filter>Assign6\prob5</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
